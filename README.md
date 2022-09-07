@@ -1,3 +1,9 @@
+### Version Node js 16.13.2
+
+### Version 8.1.2
+
+### React version 17.0.2
+
 ### Ruta para hacer un requerimiento
 
 1. Pararse en la rama main y traerse los cambios que se hayan subido
