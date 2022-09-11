@@ -6,7 +6,7 @@ export const DashboardRoutes = () => {
     <div>
       <h1>sfdasfd</h1>
       <Routes>
-        <Route path="/inicio" element={<Home />} />
+        <Route path="/home" element={<Home />} />
       </Routes>
     </div>
   );
