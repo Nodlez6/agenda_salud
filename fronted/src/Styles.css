@@ -1,0 +1,14 @@
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+:root {
+  --primary-color: #5c049b; /* 60% */
+  --secondary-color: #eaf5e7; /* 30% */
+  --tertiary-color: #0eb1d4; /* 10% */
+}
