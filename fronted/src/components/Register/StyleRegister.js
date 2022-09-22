@@ -1,20 +1,19 @@
 import { makeStyles } from "@material-ui/core/styles";
 
-const StyleLogin = makeStyles((theme) => ({
-  cardLogin: {
+const StyleRegister = makeStyles((theme) => ({
+  cardRegister: {
     height: "100%",
     width: "100%",
-    maxWidth: "30rem",
-    maxHeight: "30rem",
+    maxWidth: "32rem",
+    maxHeight: "40rem",
     textAlign: "center",
     padding: "1.2rem",
     // eslint-disable-next-line
     ["@media (min-width:400px)"]: {
       width: "80%",
-      padding: ".5rem",
     },
   },
-  inputLogin: {
+  inputRegister: {
     width: "100%",
     actions: {
       select: {
@@ -22,9 +21,9 @@ const StyleLogin = makeStyles((theme) => ({
       },
     },
   },
-  buttonlogin: {
+  buttonRegister: {
     backgroundColor: "red",
   },
 }));
 
-export default StyleLogin;
+export default StyleRegister;

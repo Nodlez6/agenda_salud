@@ -3,6 +3,7 @@ import { authReducer } from "./auth/authReducer.js";
 import { AuthContext } from "./auth/authContext";
 import AppRouter from "./routes/AppRouter.js";
 import "./Styles.css";
+import "react-toastify/dist/ReactToastify.css";
 
 const init = () => {
   return JSON.parse(localStorage.getItem("user")) || { logged: false };

@@ -1,9 +1,9 @@
 import { DashboardRoutes } from "./DashboardRoutes";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Login } from "../components/Login/Login";
+import { LoginScreen } from "../components/Login/LoginScreen";
 import { PrivateRoutes } from "./PrivateRoutes";
 import { PublicRoutes } from "./PublicRoutes";
-
+import { Register } from "../components/Register/Register";
 const AppRouter = () => {
   return (
     <div>
@@ -13,11 +13,18 @@ const AppRouter = () => {
             path="/login"
             element={
               <PublicRoutes>
-                <Login />
+                <LoginScreen />
               </PublicRoutes>
             }
           />
-          <Route path="/register" element={<Login />} />
+          <Route
+            path="/register"
+            element={
+              <PublicRoutes>
+                <Register />
+              </PublicRoutes>
+            }
+          />
 
           <Route
             path="/*"

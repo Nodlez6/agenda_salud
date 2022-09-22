@@ -1,5 +1,5 @@
 body {
-  background-color: var(--primary-color);
+  background-color: #f7ecde;
   height: 100vh;
   margin: 0;
 }
@@ -11,9 +11,17 @@ body {
 }
 
 .card__container {
-  height: 70%;
+  height: 60%;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
+}
+
+.Card__actions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 0.5rem;
 }

@@ -45,13 +45,13 @@ export const Navbar = () => {
     const opcion = e.target.textContent;
     switch (opcion) {
       case "Horario":
-        navigate("/horario");
+        navigate("/schedule");
         break;
       case "Pacientes":
-        navigate("/pacientes");
+        navigate("/patients");
         break;
       case "Estadísticas":
-        navigate("/estadisticas");
+        navigate("/statistics");
         break;
       default:
         break;
