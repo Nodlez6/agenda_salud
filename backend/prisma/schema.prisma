@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model archivos_especialistas {
+  id              Int            @id @default(autoincrement())
+  id_especialista Int?
+  url             String?        @db.VarChar(255)
+  createdat       DateTime?      @default(now()) @db.Timestamp(6)
+  updatedat       DateTime?      @default(now()) @db.Timestamp(6)
+  deletedat       DateTime?      @db.Timestamp(6)
+  especialistas   especialistas? @relation(fields: [id_especialista], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_archivos_especialistas")
+}
+
+model archivos_usuarios {
+  id              Int            @id @default(autoincrement())
+  id_especialista Int?
+  id_usuario      Int?
+  url             String?        @db.VarChar(255)
+  visible         Boolean?
+  createdat       DateTime?      @default(now()) @db.Timestamp(6)
+  updatedat       DateTime?      @default(now()) @db.Timestamp(6)
+  deletedat       DateTime?      @db.Timestamp(6)
+  especialistas   especialistas? @relation(fields: [id_especialista], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_archivos_especialistas")
+  usuarios        usuarios?      @relation(fields: [id_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_archivos_usuarios")
+}
+
+model citas {
+  id              Int            @id @default(autoincrement())
+  id_especialista Int?
+  id_usuario      Int?
+  fecha           DateTime?      @db.Date
+  desde           DateTime?      @db.Time(6)
+  hasta           DateTime?      @db.Time(6)
+  createdat       DateTime?      @default(now()) @db.Timestamp(6)
+  updatedat       DateTime?      @default(now()) @db.Timestamp(6)
+  deletedat       DateTime?      @db.Timestamp(6)
+  especialistas   especialistas? @relation(fields: [id_especialista], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_cita_especialista")
+  usuarios        usuarios?      @relation(fields: [id_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_cita_usuario")
+}
+
+model especialistas {
+  id                     Int                      @id @default(autoincrement())
+  nombre                 String?                  @db.VarChar(255)
+  apellido               String?                  @db.VarChar(255)
+  correo                 String?                  @db.VarChar(255)
+  contrasenia            String?                  @db.VarChar(255)
+  especialidad           String?                  @db.VarChar(255)
+  celular                String?                  @db.VarChar(100)
+  createdat              DateTime?                @default(now()) @db.Timestamp(6)
+  updatedat              DateTime?                @default(now()) @db.Timestamp(6)
+  deletedat              DateTime?                @db.Timestamp(6)
+  archivos_especialistas archivos_especialistas[]
+  archivos_usuarios      archivos_usuarios[]
+  citas                  citas[]
+  horarios               horarios[]
+}
+
+model horarios {
+  id              Int            @id @default(autoincrement())
+  id_especialista Int?
+  fecha           DateTime?      @db.Date
+  desde           DateTime?      @db.Time(6)
+  hasta           DateTime?      @db.Time(6)
+  periodicidad    Int?
+  createdat       DateTime?      @default(now()) @db.Timestamp(6)
+  updatedat       DateTime?      @default(now()) @db.Timestamp(6)
+  deletedat       DateTime?      @db.Timestamp(6)
+  especialistas   especialistas? @relation(fields: [id_especialista], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_horario_especialista")
+}
+
+model usuarios {
+  id                Int                 @id @default(autoincrement())
+  nombre            String?             @db.VarChar(255)
+  apellido          String?             @db.VarChar(255)
+  correo            String?             @db.VarChar(255)
+  contrasenia       String?             @db.VarChar(255)
+  celular           String?             @db.VarChar(100)
+  createdat         DateTime?           @default(now()) @db.Timestamp(6)
+  updatedat         DateTime?           @default(now()) @db.Timestamp(6)
+  deletedat         DateTime?           @db.Timestamp(6)
+  archivos_usuarios archivos_usuarios[]
+  citas             citas[]
+}
