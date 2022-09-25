@@ -48,7 +48,7 @@ model especialistas {
   id                     Int                      @id @default(autoincrement())
   nombre                 String?                  @db.VarChar(255)
   apellido               String?                  @db.VarChar(255)
-  correo                 String?                  @db.VarChar(255)
+  correo                 String     @unique             @db.VarChar(255)
   contrasenia            String?                  @db.VarChar(255)
   especialidad           String?                  @db.VarChar(255)
   celular                String?                  @db.VarChar(100)
@@ -75,10 +75,10 @@ model horarios {
 }
 
 model usuarios {
-  id                Int                 @id @default(autoincrement())
+  id                Int                @id @default(autoincrement())
   nombre            String?             @db.VarChar(255)
   apellido          String?             @db.VarChar(255)
-  correo            String?             @db.VarChar(255)
+  correo            String?   @unique         @db.VarChar(255)
   contrasenia       String?             @db.VarChar(255)
   celular           String?             @db.VarChar(100)
   createdat         DateTime?           @default(now()) @db.Timestamp(6)
