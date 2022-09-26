@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LoginScreen } from "../components/Login/LoginScreen";
 import { PrivateRoutes } from "./PrivateRoutes";
 import { PublicRoutes } from "./PublicRoutes";
-import { Register } from "../components/Register/Register";
+import { RegisterScreen } from "../components/Register/RegisterScreen";
 const AppRouter = () => {
   return (
     <div>
@@ -21,7 +21,7 @@ const AppRouter = () => {
             path="/register"
             element={
               <PublicRoutes>
-                <Register />
+                <RegisterScreen />
               </PublicRoutes>
             }
           />

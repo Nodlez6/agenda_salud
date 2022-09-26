@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../auth/authContext";
 import { useContext } from "react";
 import { types } from "../../types/types";
+import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 
 export const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -26,8 +27,8 @@ export const Navbar = () => {
   console.log(user);
 
   let pages = [];
-  if (user.admin === true) {
-    pages = ["Horario", "Pacientes", "Estadísticas"];
+  if (user.admin) {
+    pages = ["Citas", "Horario", "Pacientes", "Estadísticas", "Archivos"];
   } else {
     pages = ["Inicio", "Blog"];
   }
@@ -83,17 +84,20 @@ export const Navbar = () => {
     console.log(e.target);
   };
   return (
-    <AppBar sx={{ backgroundColor: "#5c049b" }} position="static">
+    <AppBar sx={{ backgroundColor: "#163172" }} position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <LocalHospitalIcon
+            sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
+          />
           <Typography
             variant="h6"
             noWrap
             component="a"
-            href="/"
+            href="/home"
             sx={{
               mr: 2,
+
               display: { xs: "none", md: "flex" },
               fontFamily: "monospace",
               fontWeight: 700,
@@ -102,7 +106,7 @@ export const Navbar = () => {
               textDecoration: "none",
             }}
           >
-            LOGO
+            AGENDA SALUD
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -141,12 +145,16 @@ export const Navbar = () => {
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+
+          <LocalHospitalIcon
+            sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
+          />
+
           <Typography
-            variant="h5"
+            variant="h6"
             noWrap
             component="a"
-            href=""
+            href="/home"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -158,7 +166,7 @@ export const Navbar = () => {
               textDecoration: "none",
             }}
           >
-            LOGO
+            AGENDA SALUD
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
@@ -175,7 +183,7 @@ export const Navbar = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Ver opciones">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar sx={{ bgcolor: "red" }}>{user.nombre[0]}</Avatar>
               </IconButton>
             </Tooltip>
             <Menu

@@ -5,29 +5,33 @@ import {
   CardContent,
   TextField,
 } from "@mui/material";
+
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Box } from "@mui/system";
 import { Link } from "react-router-dom";
 import StyleLogin from "./StyleLogin";
 import LockIcon from "@mui/icons-material/Lock";
+import CircularProgress from "@mui/material/CircularProgress";
+import { useState } from "react";
 
 export const CardLogin = ({
   handleInputChange,
   values,
   isValid,
   handleSubmit,
+  spinner,
 }) => {
   const sl = StyleLogin();
 
   return (
     <Card
       className={sl.cardLogin}
-      sx={{ backgroundColor: "#E9DAC1", borderRadius: 4 }}
+      sx={{ backgroundColor: "#F6F6F6", borderRadius: 3 }}
     >
       <CardContent className="card__container">
         <Box sx={{ display: "flex", alignItems: "flex-end", width: "100%" }}>
           <AccountCircleIcon
-            sx={{ fontSize: 35, color: "#54BAB9", mr: 0.5, mb: 0.5 }}
+            sx={{ fontSize: 35, color: "#1E56A0", mr: 0.5, mb: 0.5 }}
           />
           <TextField
             id="correo"
@@ -42,37 +46,27 @@ export const CardLogin = ({
               marginBottom: 1,
 
               "& label.Mui-focused": {
-                color: "green",
+                color: "#1E56A0",
               },
               "& .MuiInput-underline:after": {
-                borderBottomColor: "red",
-              },
-
-              "&:hover .MuiInput-underline": {
-                borderBottomColor: "red",
-              },
-              "&:hover fieldset": {
-                borderColor: "red",
-              },
-              "&.Mui-focused fieldset": {
-                borderColor: "green",
-              },
-              "& fieldset": {
-                borderColor: "red",
-              },
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": {
-                  borderColor: "red",
-                },
+                borderBottomColor: "#1E56A0",
               },
             }}
           />
         </Box>
         <Box sx={{ display: "flex", alignItems: "flex-end", width: "100%" }}>
-          <LockIcon sx={{ fontSize: 35, color: "#54BAB9", mr: 0.5 }} />
+          <LockIcon sx={{ fontSize: 35, color: "#1E56A0", mr: 0.5 }} />
           <TextField
             id="contraseña"
-            sx={{ mt: 6 }}
+            sx={{
+              mt: 6,
+              "& label.Mui-focused": {
+                color: "#1E56A0",
+              },
+              "& .MuiInput-underline:after": {
+                borderBottomColor: "#1E56A0",
+              },
+            }}
             className={sl.inputLogin}
             label="Contraseña"
             variant="standard"
@@ -86,19 +80,30 @@ export const CardLogin = ({
 
       <CardActions>
         <div className="Card__actions">
-          <Link to="/register">Registrarse</Link>
+          <Link to="/register" className="register_link">
+            Registrarse
+          </Link>
           <form onSubmit={handleSubmit} style={{ width: "100%" }}>
             <Button
-              style={{
-                backgroundColor: !isValid ? "#54BAB9" : "#EBEBE4",
-                color: "white",
+              sx={{
+                backgroundColor: "#163172",
+                "&:hover": {
+                  backgroundColor: "#1d4197",
+                  transition: "0.4s",
+                },
               }}
               type="submit"
               variant="contained"
               disabled={isValid}
               fullWidth
             >
-              Iniciar sesión
+              {spinner ? (
+                <Box sx={{ display: "flex" }}>
+                  <CircularProgress size={"1.5rem"} />
+                </Box>
+              ) : (
+                "Iniciar sesión"
+              )}
             </Button>
           </form>
         </div>

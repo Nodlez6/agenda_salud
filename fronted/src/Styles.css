@@ -7,6 +7,10 @@ html {
   box-sizing: inherit;
 }
 
+body {
+  background-color: #f6f6f6;
+}
+
 :root {
   --primary-color: #5c049b; /* 60% */
   --secondary-color: #eaf5e7; /* 30% */
