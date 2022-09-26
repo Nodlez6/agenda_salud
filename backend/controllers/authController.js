@@ -5,6 +5,8 @@ const auth = async (req, res) => {
   const { correo, contrasenia } = req.body;
   let user;
 
+  console.log(req.body);
+
   user = await prisma.usuarios.findUnique({
     where: { correo: correo },
   });
