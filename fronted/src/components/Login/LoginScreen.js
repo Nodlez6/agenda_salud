@@ -29,8 +29,8 @@ export const LoginScreen = () => {
 
     axios
       .post(`${process.env.REACT_APP_API_URL}/auth`, {
-        correo: "cote.palma.16@gmail.com",
-        contrasenia: "Sury2019",
+        correo: values.Correo,
+        contrasenia: values.Contraseña,
       })
       .then(function (response) {
         setSpinner(false);
