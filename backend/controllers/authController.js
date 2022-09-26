@@ -16,7 +16,6 @@ const auth = async (req, res) => {
   }
   const match = await bcrypt.compare(contrasenia, user.contrasenia);
 
-  console.log(user);
   if (user) {
     if (match) {
       res.status(200).json(user);
