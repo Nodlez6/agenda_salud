@@ -13,6 +13,8 @@ import StyleLogin from "./StyleLogin";
 import LockIcon from "@mui/icons-material/Lock";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useState } from "react";
+import Typography from "@mui/material/Typography";
+import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 
 export const CardLogin = ({
   handleInputChange,
