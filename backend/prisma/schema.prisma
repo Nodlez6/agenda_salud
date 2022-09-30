@@ -32,7 +32,7 @@ model archivos_usuarios {
 
 model citas {
   id              Int            @id @default(autoincrement())
-  id_especialista Int?
+  id_especialista Int          @unique
   id_usuario      Int?
   fecha           DateTime?      @db.Date
   desde           DateTime?      @db.Time(6)
@@ -63,7 +63,7 @@ model especialistas {
 
 model horarios {
   id              Int            @id @default(autoincrement())
-  id_especialista Int?
+  id_especialista Int?          @unique
   fecha           DateTime?      @db.Date
   desde           DateTime?      @db.Time(6)
   hasta           DateTime?      @db.Time(6)
