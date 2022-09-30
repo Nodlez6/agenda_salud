@@ -39,9 +39,9 @@ export const CardLogin = ({
             id="correo"
             label="Correo"
             variant="standard"
-            name="Correo"
+            name="correo"
             onChange={handleInputChange}
-            value={values.Correo || ""}
+            value={values.correo || ""}
             type="email"
             sx={{
               width: "100%",
@@ -72,9 +72,9 @@ export const CardLogin = ({
             className={sl.inputLogin}
             label="Contraseña"
             variant="standard"
-            name="Contraseña"
+            name="contraseña"
             onChange={handleInputChange}
-            value={values.Contraseña || ""}
+            value={values.contraseña || ""}
             type="password"
           />
         </Box>

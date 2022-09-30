@@ -100,8 +100,8 @@ export const Navbar = () => {
 
               display: { xs: "none", md: "flex" },
               fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
+              fontWeight: 600,
+
               color: "inherit",
               textDecoration: "none",
             }}

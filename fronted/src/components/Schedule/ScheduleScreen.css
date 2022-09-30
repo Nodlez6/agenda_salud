@@ -10,3 +10,9 @@
 .tarjeta_bloque {
   width: 60%;
 }
+
+.links_horario {
+  text-decoration: none;
+  font-family: "Roboto", sans-serif;
+  color: #163172;
+}

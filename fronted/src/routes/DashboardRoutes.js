@@ -21,6 +21,7 @@ export const DashboardRoutes = () => {
             </RoleRoutes>
           }
         />
+
         <Route
           path="/patients"
           element={
