@@ -72,9 +72,9 @@ export const CardLogin = ({
             className={sl.inputLogin}
             label="Contraseña"
             variant="standard"
-            name="contraseña"
+            name="contrasenia"
             onChange={handleInputChange}
-            value={values.contraseña || ""}
+            value={values.contrasenia || ""}
             type="password"
           />
         </Box>

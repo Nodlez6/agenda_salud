@@ -30,7 +30,7 @@ export const LoginScreen = () => {
     axios
       .post(`${process.env.REACT_APP_API_URL}/auth`, {
         correo: values.correo,
-        contrasenia: values.contraseña,
+        contrasenia: values.contrasenia,
       })
       .then(function (response) {
         setSpinner(false);
@@ -52,10 +52,10 @@ export const LoginScreen = () => {
   };
 
   useEffect(() => {
-    const { correo, contraseña } = values;
+    const { correo, contrasenia } = values;
 
     const emailValid = /^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i.test(correo);
-    const valid = emailValid && contraseña;
+    const valid = emailValid && contrasenia;
 
     valid ? setIsValid(false) : setIsValid(true);
   }, [values]);
