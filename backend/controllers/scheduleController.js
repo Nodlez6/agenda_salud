@@ -165,10 +165,37 @@ const deleteSchedule = async (req, res) => {
   }
 };
 
+const getScheduleById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const schedule = await prisma.horarios.findMany({
+      where: { id_especialista: Number(id) },
+    });
+    const data = [];
+    schedule.forEach((item) => {
+      const date = item.fecha;
+      date.setDate(date.getDate() + 1);
+      data.push({
+        id: item.id,
+        fecha: date.toLocaleDateString(),
+        desde: item.desde.toLocaleTimeString(),
+        hasta: item.hasta.toLocaleTimeString(),
+        periodicidad: item.periodicidad,
+        deleted_at: item.deletedat,
+      });
+    });
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   getAllSchedule,
   createSchedule,
   getScheduleBySpecialistWithPeriodicidad,
   getScheduleBySpecialistWithoutPeriodicidad,
   deleteSchedule,
+  getScheduleById,
 };

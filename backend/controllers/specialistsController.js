@@ -12,6 +12,18 @@ const getAllSpecialists = async (req, res) => {
   }
 };
 
+const getSpecialistsByEspecialidad = async (req, res) => {
+  const { especialidad } = req.params;
+  try {
+    const specialists = await prisma.especialistas.findMany({
+      where: { especialidad: especialidad },
+    });
+    res.status(200).json(specialists);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const createSpecialist = async (req, res) => {
   const { nombre, apellido, correo, contrasenia, especialidad, celular } =
     req.body;
@@ -37,4 +49,5 @@ const createSpecialist = async (req, res) => {
 module.exports = {
   getAllSpecialists,
   createSpecialist,
+  getSpecialistsByEspecialidad,
 };
