@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import { FilesSpecialistsScreen } from "../components/FilesSpec/FilesSpecialistsScreen";
 import { Home } from "../components/Home/Home";
 import { HomePacient } from "../components/HomePacient/HomePacient";
 import { SpecialistScheduler } from "../components/HomePacient/SpecialistScheduler";
@@ -19,6 +20,7 @@ export const DashboardRoutes = () => {
           element={<SpecialistScheduler />}
         />
         <Route path="/home" element={<Home />} />
+        <Route path="/file/specialist" element={<FilesSpecialistsScreen />} />
 
         <Route
           path="/schedule"

@@ -11,7 +11,7 @@ const formatSchedule = (schedule) => {
   Data.domingo = [];
   schedule.forEach((item) => {
     const date = item.fecha;
-    date.setDate(date.getDate() + 1);
+    date.setDate(date.getDate());
 
     switch (date.getDay()) {
       case 1:

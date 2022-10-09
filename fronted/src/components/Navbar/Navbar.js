@@ -30,7 +30,7 @@ export const Navbar = () => {
   if (user.admin) {
     pages = ["Citas", "Horario", "Pacientes", "Estadísticas", "Archivos"];
   } else {
-    pages = ["Inicio", "archivos"];
+    pages = ["Inicio", "Archivos"];
   }
   const settings = ["Perfil", "Cerrar sesión"];
 
@@ -54,6 +54,8 @@ export const Navbar = () => {
       case "Estadísticas":
         navigate("/statistics");
         break;
+      case "Archivos":
+          navigate("/file/specialist");
       default:
         break;
     }
