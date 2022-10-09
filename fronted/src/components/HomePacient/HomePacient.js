@@ -25,7 +25,7 @@ export const HomePacient = () => {
     setEspecialidad(event.target.value);
     let isMounted = true;
     axios
-      .get(`${process.env.REACT_APP_API_URL}/specialists/${event.target.value}`)
+      .get(`${process.env.REACT_APP_API_URL}/specialists/especialidad/${event.target.value}`)
       .then(function (response) {
         if (isMounted) {
           setSpinner(false);

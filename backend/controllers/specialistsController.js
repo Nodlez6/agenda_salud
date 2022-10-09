@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 const bcrypt = require("bcrypt");
 const prisma = require("../prisma/prismaClient");
 
@@ -12,8 +13,21 @@ const getAllSpecialists = async (req, res) => {
   }
 };
 
+const getSpecialistById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const specialist = await prisma.especialistas.findUnique({
+      where: { id },
+    });
+    res.status(200).json(specialist);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const getSpecialistsByEspecialidad = async (req, res) => {
   const { especialidad } = req.params;
+  console.log(especialidad);
   try {
     const specialists = await prisma.especialistas.findMany({
       where: { especialidad: especialidad },
@@ -50,4 +64,5 @@ module.exports = {
   getAllSpecialists,
   createSpecialist,
   getSpecialistsByEspecialidad,
+  getSpecialistById
 };

@@ -4,6 +4,7 @@ import { HomePacient } from "../components/HomePacient/HomePacient";
 import { SpecialistScheduler } from "../components/HomePacient/SpecialistScheduler";
 import { Navbar } from "../components/Navbar/Navbar";
 import { PatientsScreen } from "../components/Patients/PatientsScreen";
+import { ProfileScreen } from "../components/Profile/ProfileScreen";
 import { ScheduleScreen } from "../components/Schedule/ScheduleScreen";
 import { StatisticsScreen } from "../components/Statistics/StatisticsScreen";
 import { RoleRoutes } from "./RoleRoutes";
@@ -45,6 +46,8 @@ export const DashboardRoutes = () => {
             </RoleRoutes>
           }
         />
+
+        <Route path="/profile" element={<ProfileScreen />} />
       </Routes>
     </>
   );

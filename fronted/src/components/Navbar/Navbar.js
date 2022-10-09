@@ -24,13 +24,11 @@ export const Navbar = () => {
   const navigate = useNavigate();
   const { user, dispatch } = useContext(AuthContext);
 
-  console.log(user);
-
   let pages = [];
   if (user.admin) {
     pages = ["Citas", "Horario", "Pacientes", "Estadísticas", "Archivos"];
   } else {
-    pages = ["Inicio", "archivos"];
+    pages = ["Inicio","citas", "archivos"];
   }
   const settings = ["Perfil", "Cerrar sesión"];
 
@@ -65,7 +63,7 @@ export const Navbar = () => {
 
     switch (opcion) {
       case "Perfil":
-        navigate("/perfil");
+        navigate("/profile");
         break;
       case "Cerrar sesión":
         const action = {
@@ -80,9 +78,6 @@ export const Navbar = () => {
     }
   };
 
-  const handleChangeAvatar = (e) => {
-    console.log(e.target);
-  };
   return (
     <AppBar sx={{ backgroundColor: "#163172" }} position="static">
       <Container maxWidth="xl">
@@ -187,7 +182,7 @@ export const Navbar = () => {
               </IconButton>
             </Tooltip>
             <Menu
-              onChange={handleChangeAvatar}
+          
               sx={{ mt: "45px" }}
               id="menu-appbar"
               anchorEl={anchorElUser}
