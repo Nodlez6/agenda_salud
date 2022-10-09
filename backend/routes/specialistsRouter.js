@@ -6,9 +6,11 @@ const {
   getAllSpecialists,
   createSpecialist,
   getSpecialistsByEspecialidad,
+  getSpecialistById
 } = require("../controllers/specialistsController");
 
 router.route("/").get(getAllSpecialists).post(createSpecialist);
-router.route("/:especialidad").get(getSpecialistsByEspecialidad);
+router.route("/:id").get(getSpecialistById);
+router.route("/especialidad/:especialidad").get(getSpecialistsByEspecialidad);
 
 module.exports = router;
