@@ -22,14 +22,6 @@ const formatSelectedDate = (data,quotesTaked ) => {
   let data_final = [];
   const dates_without_period = [];
   data.forEach((elem) => {
-<<<<<<< HEAD
-    const data_aux = {
-      fecha: elem.title,
-      desde: new Date(elem.start),
-      hasta: new Date(elem.end),
-    };
-    data_final.push(data_aux);
-=======
     if(elem.periodicidad !== 0){
       let cantidad, dia;
       (elem.periodicidad === 1) ? cantidad = 3 : cantidad = 1;
@@ -61,7 +53,6 @@ const formatSelectedDate = (data,quotesTaked ) => {
   console.log(data_final);
   quotesTaked.forEach((elem) => {
     data_final = data_final.filter((item) =>(item.fecha === elem.fecha.slice(0,10) && item.desde === elem.desde && item.hasta === elem.hasta) ? false : true);
->>>>>>> 8364259c5c2d1a0c4a26c00a41a9ebf70674ab88
   });
 
   return data_final;
