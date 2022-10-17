@@ -1,4 +1,6 @@
+const moment = require("moment");
 const prisma = require("../prisma/prismaClient");
+
 
 const formatSchedule = (schedule) => {
   const Data = {};
@@ -10,14 +12,22 @@ const formatSchedule = (schedule) => {
   Data.sabado = [];
   Data.domingo = [];
   schedule.forEach((item) => {
-    const date = item.fecha;
-    date.setDate(date.getDate());
-
-    switch (date.getDay()) {
-      case 1:
+  
+    switch (item.fecha.getDay()) {
+      case 0:
         Data.lunes.push({
           id: item.id,
-          fecha: date.toLocaleDateString(),
+          fecha: item.fecha,
+          desde: item.desde.toLocaleTimeString(),
+          hasta: item.hasta.toLocaleTimeString(),
+          periodicidad: item.periodicidad,
+          deleted_at: item.deletedat,
+        });
+        break;
+      case 1:
+        Data.martes.push({
+          id: item.id,
+          fecha:  item.fecha,
           desde: item.desde.toLocaleTimeString(),
           hasta: item.hasta.toLocaleTimeString(),
           periodicidad: item.periodicidad,
@@ -25,9 +35,9 @@ const formatSchedule = (schedule) => {
         });
         break;
       case 2:
-        Data.martes.push({
+        Data.miercoles.push({
           id: item.id,
-          fecha: date.toLocaleDateString(),
+          fecha:  item.fecha,
           desde: item.desde.toLocaleTimeString(),
           hasta: item.hasta.toLocaleTimeString(),
           periodicidad: item.periodicidad,
@@ -35,9 +45,9 @@ const formatSchedule = (schedule) => {
         });
         break;
       case 3:
-        Data.miercoles.push({
+        Data.jueves.push({
           id: item.id,
-          fecha: date.toLocaleDateString(),
+          fecha:  item.fecha,
           desde: item.desde.toLocaleTimeString(),
           hasta: item.hasta.toLocaleTimeString(),
           periodicidad: item.periodicidad,
@@ -45,9 +55,9 @@ const formatSchedule = (schedule) => {
         });
         break;
       case 4:
-        Data.jueves.push({
+        Data.viernes.push({
           id: item.id,
-          fecha: date.toLocaleDateString(),
+          fecha:  item.fecha,
           desde: item.desde.toLocaleTimeString(),
           hasta: item.hasta.toLocaleTimeString(),
           periodicidad: item.periodicidad,
@@ -55,9 +65,9 @@ const formatSchedule = (schedule) => {
         });
         break;
       case 5:
-        Data.viernes.push({
+        Data.sabado.push({
           id: item.id,
-          fecha: date.toLocaleDateString(),
+          fecha:  item.fecha,
           desde: item.desde.toLocaleTimeString(),
           hasta: item.hasta.toLocaleTimeString(),
           periodicidad: item.periodicidad,
@@ -65,19 +75,9 @@ const formatSchedule = (schedule) => {
         });
         break;
       case 6:
-        Data.sabado.push({
-          id: item.id,
-          fecha: date.toLocaleDateString(),
-          desde: item.desde.toLocaleTimeString(),
-          hasta: item.hasta.toLocaleTimeString(),
-          periodicidad: item.periodicidad,
-          deleted_at: item.deletedat,
-        });
-        break;
-      case 0:
         Data.domingo.push({
           id: item.id,
-          fecha: date.toLocaleDateString(),
+          fecha:  item.fecha,
           desde: item.desde.toLocaleTimeString(),
           hasta: item.hasta.toLocaleTimeString(),
           periodicidad: item.periodicidad,
@@ -132,7 +132,6 @@ const createSchedule = async (req, res) => {
   const { idEspecialista, fecha, horarios, periodicidad } = req.body;
 
   const deletedDate = req.body.deleted_at;
-
   let schedule;
   try {
     horarios.forEach(async (item) => {
@@ -167,6 +166,8 @@ const deleteSchedule = async (req, res) => {
 
 const getScheduleById = async (req, res) => {
   const { id } = req.params;
+ 
+  
 
   try {
     const schedule = await prisma.horarios.findMany({
@@ -174,13 +175,12 @@ const getScheduleById = async (req, res) => {
     });
     const data = [];
     schedule.forEach((item) => {
-      const date = item.fecha;
-      date.setDate(date.getDate() + 1);
+      console.log(moment(item.desde).format("HH:mm"));
       data.push({
         id: item.id,
-        fecha: date.toLocaleDateString(),
-        desde: item.desde.toLocaleTimeString(),
-        hasta: item.hasta.toLocaleTimeString(),
+        fecha: item.fecha,
+        desde: moment(item.desde).format("HH:mm"),
+        hasta: moment(item.hasta).format("HH:mm"),
         periodicidad: item.periodicidad,
         deleted_at: item.deletedat,
       });

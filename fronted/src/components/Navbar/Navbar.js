@@ -28,7 +28,7 @@ export const Navbar = () => {
   if (user.admin) {
     pages = ["Citas", "Horario", "Pacientes", "Estadísticas", "Archivos"];
   } else {
-    pages = ["Inicio","citas", "archivos"];
+    pages = ["Inicio","Citas", "Archivos"];
   }
   const settings = ["Perfil", "Cerrar sesión"];
 
@@ -42,22 +42,42 @@ export const Navbar = () => {
   const handleCloseNavMenu = (e) => {
     setAnchorElNav(null);
     const opcion = e.target.textContent;
-    switch (opcion) {
-      case "Horario":
-        navigate("/schedule");
-        break;
-      case "Pacientes":
-        navigate("/patients");
-        break;
-      case "Estadísticas":
-        navigate("/statistics");
-        break;
-      case "Archivos":
-          navigate("/file/specialist");
-      default:
-        break;
+    if(user.admin){
+      switch (opcion) {
+        case "Horario":
+          navigate("/schedule");
+          break;
+        case "Pacientes":
+          navigate("/patients");
+          break;
+        case "Estadísticas":
+          navigate("/statistics");
+          break;
+        case "Archivos":
+            navigate("/file/specialist");
+            break;
+        default:
+          break;
+      }
     }
-  };
+    else{
+        switch (opcion) {
+          case "Inicio":
+            navigate("/homepacient");
+            break;
+          case "Citas":
+            navigate("/quotesPacient");
+            break;
+          case "Archivos":
+              navigate("/");
+              break;
+          default:
+            break;
+        }
+      }
+    };
+   
+  
 
   const handleCloseUserMenu = (e) => {
     setAnchorElUser(null);

@@ -81,7 +81,7 @@ function Row({
                 <TableBody>
                   {row?.Horas?.map((HoraRow) => (
                     <TableRow key={HoraRow?.id}>
-                      <TableCell align="center">{HoraRow?.fecha}</TableCell>
+                      <TableCell align="center">{HoraRow?.fecha.slice(0,10)}</TableCell>
                       <TableCell align="center">{HoraRow?.desde}</TableCell>
                       <TableCell align="center">{HoraRow?.hasta}</TableCell>
                       <TableCell align="center">

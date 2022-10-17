@@ -1,35 +1,119 @@
-import { Card, CardContent, Container, Grid, TextField, Typography } from "@mui/material";
+import { Button, Card, CardContent, CircularProgress, Container, Grid, TextField, Typography } from "@mui/material";
 import { Box, flexbox } from "@mui/system";
 import { StaticDatePicker } from "@mui/x-date-pickers";
 import axios from "axios";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import { AuthContext } from "../../auth/authContext";
 
-const formatSelectedDate = (data) => {
-  const data_final = [];
+function toDate(dStr, format) {
+  var now = new Date();
+  if (format === "h:m") {
+    now.setHours(dStr.substr(0, dStr.indexOf(":")));
+    now.setMinutes(dStr.substr(dStr.indexOf(":") + 1));
+    now.setSeconds(0);
+    return now;
+  } else return "Invalid Format";
+}
+
+const formatSelectedDate = (data,quotesTaked ) => {
+  console.log(quotesTaked)
+  let data_final = [];
+  const dates_without_period = [];
   data.forEach((elem) => {
+<<<<<<< HEAD
     const data_aux = {
       fecha: elem.title,
       desde: new Date(elem.start),
       hasta: new Date(elem.end),
     };
     data_final.push(data_aux);
+=======
+    if(elem.periodicidad !== 0){
+      let cantidad, dia;
+      (elem.periodicidad === 1) ? cantidad = 3 : cantidad = 1;
+      (elem.periodicidad === 1) ? dia = 7 : dia = 14;
+      for(let i = 0; i <= cantidad; i++) {
+        const fecha_bdd = new Date(elem.fecha.slice(0,10) );
+        const nueva_fecha = new Date();
+        nueva_fecha.setDate(fecha_bdd.getDate() + i*dia + 1);
+        let suma = (nueva_fecha.getDate() < 10) ? "0" : "";
+        data_final.push({ fecha: nueva_fecha.getFullYear()+ '-' + (nueva_fecha.getMonth()+1) + '-' + suma + nueva_fecha.getDate(), desde: elem.desde, hasta: elem.hasta}); 
+      }
+    }
+    else{
+      dates_without_period.push({ fecha: elem.fecha.slice(0,10), desde: elem.desde, hasta: elem.hasta, deleted_at: elem.deleted_at});
+    }
+   
   });
+  dates_without_period.forEach((elem) => {
+  
+    if(elem.deleted_at){
+      
+      data_final = data_final.filter((item) => (item.fecha === elem.fecha && item.desde === elem.desde && item.hasta === elem.hasta) ? false : true);
+    }
+    else{
+      data_final.push(elem);
+    }
+  });
+ 
+  console.log(data_final);
+  quotesTaked.forEach((elem) => {
+    data_final = data_final.filter((item) =>(item.fecha === elem.fecha.slice(0,10) && item.desde === elem.desde && item.hasta === elem.hasta) ? false : true);
+>>>>>>> 8364259c5c2d1a0c4a26c00a41a9ebf70674ab88
+  });
+
+  return data_final;
 }
+let data_final = [];
 
 export const SpecialistScheduler = () => {
+  const notifyError = () =>
+    toast.error("No se ha guardado el horario", {
+      position: toast.POSITION.TOP_CENTER,
+    });
+
+  const notifySuccess = () =>
+    toast.success("Cita agendada con éxito", {
+      position: toast.POSITION.TOP_CENTER,
+    });
   const { id } = useParams();
-  const [value, setValue] = React.useState();
-  console.log(id);
+  const [value, setValue] = React.useState(null);
+ const [bloqueHora, setBloqueHora] = React.useState([]);
+ const { user } = useContext(AuthContext);
+ const [isValid, setIsValid] = React.useState(true);
+ const [spinner, setSpinner] = React.useState(false);
+
+
+  const handleCalendar = (date) => {
+    let data_aux = [];
+    let suma = (date.getDate() < 10) ? "0" : "";
+    let dateCompare = date.getFullYear()+ '-' + (date.getMonth()+1) + '-' + suma + date.getDate();
+    console.log(data_final)
+    data_final.forEach((elem) => {
+      if(elem.fecha === dateCompare){
+        data_aux.push({ desde: elem.desde, hasta: elem.hasta, select: false});        
+      }
+    });
+    setBloqueHora(data_aux);
+    setValue(date);
+  }; 
+
 
   React.useEffect(() => {
+    setSpinner(true);
     let isMounted = true;
-    axios
-      .get(`${process.env.REACT_APP_API_URL}/schedules/${id}`)
+    Promise.all([
+      axios.get(`${process.env.REACT_APP_API_URL}/quotes/specialistWithout/${id}`),
+      axios.get(`${process.env.REACT_APP_API_URL}/schedules/${id}`)
+    ])
       .then(function (response) {
         if (isMounted) {
-          console.log(response);
-          formatSelectedDate(response.data);
+          console.log(response[1].data);
+          console.log(response[0].data);
+          data_final = formatSelectedDate(response[1].data, response[0].data);
+          setSpinner(false);
         }
       })
       .catch(function (error) {
@@ -41,27 +125,108 @@ export const SpecialistScheduler = () => {
     };
   }, []);
 
+  useEffect(() => {
+   const valid = bloqueHora.some((elem) => elem.select === true) && value;
+   setIsValid(!valid);
+  }, [value, bloqueHora]);
+
+  
+
+
+  const handleSubmit = (e) => {
+    const data = [];
+    bloqueHora.forEach((item) => {
+      if (item.select) {
+        data.push({
+          desde: toDate(item.desde, "h:m"),
+          hasta: toDate(item.hasta, "h:m"),
+        });
+      }
+    });
+   axios
+   .post(`${process.env.REACT_APP_API_URL}/quotes`, {
+     idEspecialista: id,
+     idUsuario: user.id,
+     fecha: value,
+     horarios: data,
+   })
+   .then(function (response) {
+        notifySuccess();
+        let dateCompare = value.getFullYear()+ '-' + (value.getMonth()+1) + '-' + value.getDate();
+        bloqueHora.forEach((elem) => {
+          console.log(data_final)
+          console.log(elem)
+          data_final = data_final.filter((item) =>(item.fecha === dateCompare && item.desde === elem.desde && item.hasta === elem.hasta && elem.select === true) ? false : true);
+        });
+        setBloqueHora([]);
+        setValue(null);
+        console.log(response);
+     
+   })
+   .catch(function (error) {
+      notifyError();
+      console.log(error);
+   });
+  }
+
   return (
     
     <Container>
+      <ToastContainer />
       <Grid sx={{mt: 2}} container spacing={2}>
-        <Grid item md={5} xs={12}>
+        {spinner ? (<Box sx={{display: "flex", justifyContent: "center", alignContent: "center" }}>
+          <CircularProgress size={"1.5rem"} />
+        </Box>) : (<><Grid item md={5} xs={12}>
           <StaticDatePicker
             disablePast={true}
             displayStaticWrapperAs="desktop"
             openTo="day"
             value={value}
-            onChange={(newValue) => {
-              setValue(newValue);
-            }}
+            onChange={handleCalendar}
             renderInput={(params) => <TextField {...params} />}
           />
         </Grid>
         <Grid item md={7} xs={12}>
             <Card sx={{width: "100%", height:"100%"}}>
               <CardContent sx={{ height: "100%"}}>
-                <Box sx={{ height: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
-                  <Typography
+                
+                  {(bloqueHora.length > 0) ? (bloqueHora.map((item, index) => {
+                    return (
+                      <Button
+                      onClick={() => {
+                        const horarioCopy = [...bloqueHora];
+                        horarioCopy[index].select = !horarioCopy[index].select;
+                        setBloqueHora(horarioCopy);
+                      }}
+                      key={index}
+                      sx={
+                        item.select
+                          ? {
+                              backgroundColor: "#D6E4F0",
+                              mr: 1,
+                              "&:hover": {
+                                backgroundColor: "#D6E4F0",
+        
+                                transition: "0.4s",
+                              },
+                            }
+                          : {
+                              backgroundColor: "#163172",
+                              color: "white",
+                              mr: 1,
+                              "&:hover": {
+                                backgroundColor: "#D6E4F0",
+                                color: "black",
+                                transition: "0.4s",
+                              },
+                            }
+                      }
+                    >
+                      {item.desde} - {item.hasta}
+                    </Button>
+                    );
+                  }))  :(
+                    <Box sx={{ height: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}><Typography
                     variant="h6"
                     sx={{
                       mr: 2,
@@ -75,11 +240,32 @@ export const SpecialistScheduler = () => {
                   >
                     No hay horarios disponibles
                   </Typography>
-                </Box>
+                </Box>)}
                 
               </CardContent>
             </Card>
         </Grid>
+          <Grid sx={{display: "flex", justifyContent: "end"}} item md={12} xs={12}>
+            <Button 
+            onClick={handleSubmit}
+            disabled={isValid}
+            sx={{
+              backgroundColor: "#163172",
+              color: "white",
+              "&:hover": {
+                backgroundColor: "#1d4197",
+                transition: "0.4s",
+              },
+              "&:disabled": {
+                background: "#cfcfcf",
+              },
+            }}
+            
+            >
+              Guardar
+            </Button>
+          </Grid></>)}
+        
       </Grid>
     </Container>
 

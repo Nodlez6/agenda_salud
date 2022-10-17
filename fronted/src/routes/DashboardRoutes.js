@@ -6,6 +6,7 @@ import { SpecialistScheduler } from "../components/HomePacient/SpecialistSchedul
 import { Navbar } from "../components/Navbar/Navbar";
 import { PatientsScreen } from "../components/Patients/PatientsScreen";
 import { ProfileScreen } from "../components/Profile/ProfileScreen";
+import { QuotesPacient } from "../components/quotesPacient/QuotesPacient";
 import { ScheduleScreen } from "../components/Schedule/ScheduleScreen";
 import { StatisticsScreen } from "../components/Statistics/StatisticsScreen";
 import { RoleRoutes } from "./RoleRoutes";
@@ -22,7 +23,7 @@ export const DashboardRoutes = () => {
         />
         <Route path="/home" element={<Home />} />
         <Route path="/file/specialist" element={<FilesSpecialistsScreen />} />
-
+        <Route path="/quotesPacient" element={<QuotesPacient />} />
         <Route
           path="/schedule"
           element={
