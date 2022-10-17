@@ -1,6 +1,7 @@
 var AWS = require('aws-sdk/clients/s3');
 const fs = require('fs');
 const multer = require('multer');
+const { uploadFile, getFileStream } = require('./s3')
 
 const bucketName = process.env.AWS_BUCKET;
 const region = process.env.AWS_REGION;
@@ -17,19 +18,11 @@ const upload = multer({ storage: storage })
 
 const UploadFile = async (req, res) => {
     try {
-        console.log(req.file)
         const file = req.file;
-        const params = {
-            Bucket: bucketName,
-            Key: file.name,
-            Body: file.data
-        };
-        s3.upload(params, (error, data) => {
-            if (error) {
-                res.status(500).send(error);
-            }
-            res.status(200).send(data);
-        });
+        console.log("poder")
+        console.log(file)
+        const result = await uploadFile(file);
+        res.send(result);
     } catch (error) {
         console.log(error);
     }

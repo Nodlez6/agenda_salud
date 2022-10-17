@@ -9,7 +9,7 @@ const formatSelectedDate = (data) => {
   const data_final = [];
   data.forEach((elem) => {
     const data_aux = {
-      fecha: elem.ti tle,
+      fecha: elem.title,
       desde: new Date(elem.start),
       hasta: new Date(elem.end),
     };
