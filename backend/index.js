@@ -6,6 +6,7 @@ const specialistsRouter = require("./routes/specialistsRouter");
 const authRouter = require("./routes/authRouter");
 const schedulesRouter = require("./routes/schedulesRouter");
 const fileSpec = require("./routes/fileSpec");
+const quotesRouter = require("./routes/quotesRouter");
 
 const app = express();
 app.use(express.json());
@@ -16,6 +17,7 @@ app.use("/users", usersRouter);
 app.use("/specialists", specialistsRouter);
 app.use("/schedules", schedulesRouter);
 app.use("/files", fileSpec);
+app.use("/quotes",quotesRouter);
 /*
 
 app.use("/quotes", quotesRouter);
