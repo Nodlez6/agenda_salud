@@ -30,7 +30,8 @@ const UploadFile = async (req, res) => {
         const archivos_especialistas=await prisma.archivos_especialistas.create({
             data:{
                 id_especialista:Number(req.query.id),
-                url:downlink
+                url:downlink,
+                nombre_archivo:file.originalname
             }
         })
 
