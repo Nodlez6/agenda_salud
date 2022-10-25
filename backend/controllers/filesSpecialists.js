@@ -4,23 +4,11 @@ const multer = require('multer');
 const { uploadFile,deleteFile  } = require('./s3')
 const prisma = require("../prisma/prismaClient");
 
-const bucketName = process.env.AWS_BUCKET;
-const region = process.env.AWS_REGION;
-const accessKeyId = process.env.AWS_ACCESS_KEY;
-const secretAccessKey = process.env.AWS_SECRET_KEY;
-
-const s3= new AWS({
-    region,
-    accessKeyId,
-    secretAccessKey
-});
-const storage = multer.memoryStorage()
-const upload = multer({ storage: storage })
 
 const UploadFile = async (req, res) => {
     try {
         console.log(req.query)
-        path=req.query.nombre+"_"+req.query.apellido+"_"+req.query.id+"/Mis_Archivos/"
+        path="Especialista_"+req.query.id+"/Mis_Archivos/"
         const file = req.file;
         console.log(file)
         const result = await uploadFile(file,path);
@@ -43,7 +31,7 @@ const UploadFile = async (req, res) => {
 const DeleteFile = async (req, res) => {
     try {
         console.log(req.query)
-        path=req.query.nombre+"_"+req.query.apellido+"_"+req.query.id+"/Mis_Archivos/"
+        path="Especialista_"+req.query.id+"/Mis_Archivos/"
         const result = await deleteFile(path+req.query.nombre_archivo);
         res.send(result);
         const borrar_Archivo=await prisma.archivos_especialistas.delete({
