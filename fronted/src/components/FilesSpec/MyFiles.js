@@ -86,7 +86,7 @@ export const MyFiles = () => {
         setFile(null)
         const formData = new FormData();
         formData.append("image", files)
-        await axios.post(`${process.env.REACT_APP_API_URL}/files`, formData,{params:{ id: user.id, nombre: user.nombre, apellido: user.apellido }}, { headers: {'Content-Type': 'multipart/form-data'}})
+        await axios.post(`${process.env.REACT_APP_API_URL}/files`, formData,{params:{ id: user.id}}, { headers: {'Content-Type': 'multipart/form-data'}})
         .then(function (response) {
             notifySuccess()
             setSpinner(false)
@@ -101,7 +101,7 @@ export const MyFiles = () => {
     }
 
     const handleDelete = async(file) => {
-        await axios.post(`${process.env.REACT_APP_API_URL}/files/delete`, {id_bdd: file.id, id: user.id, nombre: user.nombre, apellido: user.apellido, nombre_archivo: file.nombre_archivo})
+        await axios.post(`${process.env.REACT_APP_API_URL}/files/delete`, {id_bdd: file.id, id: user.id})
         .then(function (response) {
             notifySuccessDelete()
             setRefresh(!refresh)
