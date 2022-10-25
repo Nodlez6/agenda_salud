@@ -10,6 +10,7 @@ export const MyFiles = () => {
     const [filesArray, setFilesArray] = React.useState([])
     const hiddenFileInput = React.useRef(null);
     const [isValid, setIsValid] = React.useState(true)
+    const { user } = useContext(AuthContext);
     const fileSelected = event => {
         const file = event.target.files[0]
         setFile(file)
@@ -21,6 +22,9 @@ export const MyFiles = () => {
             setIsValid(true)
         }
     }, [files])
+
+    //traer archivos segun el id del especialista
+
     const handleClick = event => {
         hiddenFileInput.current.click();
     };
@@ -30,7 +34,7 @@ export const MyFiles = () => {
 
         const formData = new FormData();
         formData.append("image", files)
-        await axios.post(`${process.env.REACT_APP_API_URL}/files`, formData, { headers: {'Content-Type': 'multipart/form-data'}})
+        await axios.post(`${process.env.REACT_APP_API_URL}/files`, {formData: formData, id: user.id, nombre: user.nombre, apellido: user.apellido }, { headers: {'Content-Type': 'multipart/form-data'}})
     }
   return (
     <>
