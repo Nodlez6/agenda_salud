@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardActions, CardContent, CircularProgress, Grid, Typography } from '@mui/material'
+import { Box, Button, Card, CardActions, CardContent, CircularProgress, Grid, Link, Typography } from '@mui/material'
 import React, { useEffect,useContext } from 'react'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
@@ -7,7 +7,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import axios from 'axios';
 import { AuthContext } from '../../auth/authContext';
 import { toast, ToastContainer } from 'react-toastify';
-import { Link } from 'react-router-dom';
+
 export const MyFiles = () => {
     const [files, setFile] = React.useState([])
     const [filesArray, setFilesArray] = React.useState([])
@@ -16,6 +16,7 @@ export const MyFiles = () => {
     const [spinner, setSpinner] = React.useState(false);
     const [spinner2, setSpinner2] = React.useState(false);
     const { user } = useContext(AuthContext);
+    const [refresh, setRefresh] = React.useState(false);
 
     const notifyError = () =>
     toast.error("No se ha podido subir el archivo", {
@@ -31,6 +32,7 @@ export const MyFiles = () => {
         const file = event.target.files[0]
         setFile(file)
         setIsValid(false)
+        console.log(file)
     
     }
     useEffect(() => {
@@ -60,7 +62,7 @@ export const MyFiles = () => {
         return () => {
             isMounted = false;
         }
-    }, [])
+    }, [refresh])
 
     const handleClick = event => {
         hiddenFileInput.current.click();
@@ -78,6 +80,7 @@ export const MyFiles = () => {
         .then(function (response) {
             notifySuccess()
             setSpinner(false)
+            setRefresh(!refresh)
         }
         )
         .catch(function (error) {
@@ -86,6 +89,20 @@ export const MyFiles = () => {
         }
         );
     }
+
+    const handleDelete = async(file) => {
+        await axios.post(`${process.env.REACT_APP_API_URL}/files/delete/`, {id_bdd: file.id, id: user.id, nombre: user.nombre, apellido: user.apellido, nombre_archivo: file.nombre_archivo})
+        .then(function (response) {
+            notifySuccess()
+            setRefresh(!refresh)
+        }
+        )
+        .catch(function (error) {
+            notifyError()
+        }
+        );
+    }
+console.log(filesArray)
   return (
     <>
      <ToastContainer />
@@ -139,12 +156,14 @@ export const MyFiles = () => {
                     <Card sx={{width: "100%", height: 130 }}>
                         <Box sx={{height: "100%",display: "flex", flexDirection:"column", justifyContent: "center", alignItems: "center"}}>
                             <Box sx={{width: "100%", display: "flex", justifyContent: "end", mr: 2}}>
-                                <CloseIcon  sx={{fontSize: 16, color: "#163172", cursor:  "pointer"}} />
+                                <CloseIcon onClick={handleDelete(file)}  sx={{fontSize: 16, color: "#163172", cursor:  "pointer"}} />
                                 
                             </Box>
                             
+                            
+                            
                             <InsertDriveFileIcon sx={{ fontSize: 80, color: "#163172" }}/> 
-                            <a href={file.url} >{file.url.split("/")[5].slice(0,21)}...</a> 
+                            <Link href={file.url} >{file.nombre_archivo.slice(0,21)}{(file.nombre_archivo.length > 21 && "..." )}</Link> 
                         </Box>
                 
                     </Card>
