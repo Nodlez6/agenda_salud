@@ -40,4 +40,14 @@ function getFileList(path) {
   return s3.listObjectsV2(ListParams).promise()
 }
 exports.getFileList = getFileList
+// delete file to s3
+function deleteFile(key) {
+  const deleteParams = {
+    Bucket: bucketName,
+    Key: key
+  }
+
+  return s3.deleteObject(deleteParams).promise()
+}
+exports.deleteFile = deleteFile
 

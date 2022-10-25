@@ -1,7 +1,7 @@
 var AWS = require('aws-sdk/clients/s3');
 const fs = require('fs');
 const multer = require('multer');
-const { uploadFile, getFileList,getObject } = require('./s3')
+const { uploadFile,deleteFile  } = require('./s3')
 const prisma = require("../prisma/prismaClient");
 
 const bucketName = process.env.AWS_BUCKET;
@@ -40,24 +40,17 @@ const UploadFile = async (req, res) => {
     }
 };
 
-const GetFileList = async (req, res) => {
+const DeleteFile = async (req, res) => {
     try {
-        
-        const result = await getFileList(req.params.path);
-        console.log(result)
+        console.log(req.query)
+        path=req.query.nombre+"_"+req.query.apellido+"_"+req.query.id+"/Mis_Archivos/"
+        const result = await deleteFile(path+req.query.nombre_archivo);
         res.send(result);
-    } catch (error) {
-        console.log(error);
-    }
-};
-const GetObject = async (req, res) => {
-    console.log("gola")
-    try {
-        console.log(req.params.path)
-        console.log(req.params.key)
-        const result = await getObject(req.params.path,req.params.key);
-        console.log(result)
-        res.send(result);
+        const borrar_Archivo=await prisma.archivos_especialistas.delete({
+            where:{
+                id:Number(req.query.id_bdd)
+            }
+        })
     } catch (error) {
         console.log(error);
     }
@@ -76,8 +69,7 @@ const getArchivosEspecialistas = async (req, res) => {
     }
 };
 module.exports = {
-    GetObject,
-    GetFileList,
+    DeleteFile,
     UploadFile,
     getArchivosEspecialistas
 }
