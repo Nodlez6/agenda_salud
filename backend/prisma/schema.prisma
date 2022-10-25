@@ -14,6 +14,7 @@ model archivos_especialistas {
   createdat       DateTime?      @default(now()) @db.Timestamp(6)
   updatedat       DateTime?      @default(now()) @db.Timestamp(6)
   deletedat       DateTime?      @db.Timestamp(6)
+  nombre_archivo  String?        @db.VarChar(250)
   especialistas   especialistas? @relation(fields: [id_especialista], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_archivos_especialistas")
 }
 
@@ -26,13 +27,14 @@ model archivos_usuarios {
   createdat       DateTime?      @default(now()) @db.Timestamp(6)
   updatedat       DateTime?      @default(now()) @db.Timestamp(6)
   deletedat       DateTime?      @db.Timestamp(6)
+  nombre_archivo  String?        @db.VarChar(250)
   especialistas   especialistas? @relation(fields: [id_especialista], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_archivos_especialistas")
   usuarios        usuarios?      @relation(fields: [id_usuario], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_archivos_usuarios")
 }
 
 model citas {
   id              Int            @id @default(autoincrement())
-  id_especialista Int          @unique
+  id_especialista Int?
   id_usuario      Int?
   fecha           DateTime?      @db.Date
   desde           DateTime?      @db.Time(6)
@@ -48,7 +50,7 @@ model especialistas {
   id                     Int                      @id @default(autoincrement())
   nombre                 String?                  @db.VarChar(255)
   apellido               String?                  @db.VarChar(255)
-  correo                 String     @unique             @db.VarChar(255)
+  correo                 String?                  @db.VarChar(255)
   contrasenia            String?                  @db.VarChar(255)
   especialidad           String?                  @db.VarChar(255)
   celular                String?                  @db.VarChar(100)
@@ -63,7 +65,7 @@ model especialistas {
 
 model horarios {
   id              Int            @id @default(autoincrement())
-  id_especialista Int?          @unique
+  id_especialista Int?
   fecha           DateTime?      @db.Date
   desde           DateTime?      @db.Time(6)
   hasta           DateTime?      @db.Time(6)
@@ -75,10 +77,10 @@ model horarios {
 }
 
 model usuarios {
-  id                Int                @id @default(autoincrement())
+  id                Int                 @id @default(autoincrement())
   nombre            String?             @db.VarChar(255)
   apellido          String?             @db.VarChar(255)
-  correo            String   @unique         @db.VarChar(255)
+  correo            String?             @db.VarChar(255)
   contrasenia       String?             @db.VarChar(255)
   celular           String?             @db.VarChar(100)
   createdat         DateTime?           @default(now()) @db.Timestamp(6)
