@@ -6,14 +6,12 @@ const upload = multer({ storage: storage })
 
 const {
     UploadFile,
-    GetFileList,
-    GetObject,
-    getArchivosEspecialistas
+    getArchivosEspecialistas,
+    DeleteFile
   } = require("../controllers/filesSpecialists");
  
   router.route("/").post( upload.single('image'),UploadFile);
-  //router.route("/:path").get(GetFileList);
-  router.route("/:path/:key").get(GetObject);
+  router.route("/delete").post(DeleteFile)
   router.route("/:id").get(getArchivosEspecialistas);
 
 
