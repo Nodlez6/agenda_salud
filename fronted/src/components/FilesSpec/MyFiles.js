@@ -28,6 +28,16 @@ export const MyFiles = () => {
       position: toast.POSITION.TOP_CENTER,
     });
 
+    const notifyErrorDelete = () =>
+    toast.error("No se ha podido eliminar el archivo", {
+      position: toast.POSITION.TOP_CENTER,
+    });
+
+    const notifySuccessDelete = () =>
+    toast.success("Se ha eliminado el archivo", {
+      position: toast.POSITION.TOP_CENTER,
+    });
+
     const fileSelected = event => {
         const file = event.target.files[0]
         setFile(file)
@@ -76,7 +86,7 @@ export const MyFiles = () => {
         setFile(null)
         const formData = new FormData();
         formData.append("image", files)
-        await axios.post(`${process.env.REACT_APP_API_URL}/files`, formData,{params:{ id: user.id, nombre: user.nombre, apellido: user.apellido }}, { headers: {'Content-Type': 'multipart/form-data'}})
+        await axios.post(`${process.env.REACT_APP_API_URL}/files`, formData,{params:{ id: user.id}}, { headers: {'Content-Type': 'multipart/form-data'}})
         .then(function (response) {
             notifySuccess()
             setSpinner(false)
@@ -91,14 +101,14 @@ export const MyFiles = () => {
     }
 
     const handleDelete = async(file) => {
-        await axios.post(`${process.env.REACT_APP_API_URL}/files/delete/`, {id_bdd: file.id, id: user.id, nombre: user.nombre, apellido: user.apellido, nombre_archivo: file.nombre_archivo})
+        await axios.post(`${process.env.REACT_APP_API_URL}/files/delete`, {id_bdd: file.id, id: user.id})
         .then(function (response) {
-            notifySuccess()
+            notifySuccessDelete()
             setRefresh(!refresh)
         }
         )
         .catch(function (error) {
-            notifyError()
+            notifyErrorDelete()
         }
         );
     }
@@ -156,7 +166,7 @@ console.log(filesArray)
                     <Card sx={{width: "100%", height: 130 }}>
                         <Box sx={{height: "100%",display: "flex", flexDirection:"column", justifyContent: "center", alignItems: "center"}}>
                             <Box sx={{width: "100%", display: "flex", justifyContent: "end", mr: 2}}>
-                                <CloseIcon onClick={handleDelete(file)}  sx={{fontSize: 16, color: "#163172", cursor:  "pointer"}} />
+                                <CloseIcon onClick={ () => handleDelete(file)}  sx={{fontSize: 16, color: "#163172", cursor:  "pointer"}} />
                                 
                             </Box>
                             
