@@ -20,7 +20,7 @@ function uploadFile(file) {
   const uploadParams = {
     Bucket: bucketName,
     Body: file.buffer,
-    Key: "poder/"+file.originalname
+    Key: "public/"+file.originalname
   }
 
   return s3.upload(uploadParams).promise()
@@ -28,13 +28,16 @@ function uploadFile(file) {
 exports.uploadFile = uploadFile
 
 
-// downloads a file from s3
-function getFileStream(fileKey) {
-  const downloadParams = {
-    Key: fileKey,
+// file list from s3
+function getFileList(path) {
+  const ListParams = {
+    Prefix: path,
     Bucket: bucketName
+    
   }
+  
 
-  return s3.getObject(downloadParams).createReadStream()
+  return s3.listObjectsV2(ListParams).promise()
 }
-exports.getFileStream = getFileStream
+exports.getFileList = getFileList
+
