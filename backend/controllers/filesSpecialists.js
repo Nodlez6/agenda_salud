@@ -62,8 +62,22 @@ const GetObject = async (req, res) => {
         console.log(error);
     }
 };
+
+const getArchivosEspecialistas = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const archivos_especialistas = await prisma.archivos_especialistas.findMany({
+            where: { id_especialista: Number(id) }
+        });
+        console.log(archivos_especialistas)
+        res.status(200).json(archivos_especialistas);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 module.exports = {
     GetObject,
     GetFileList,
-    UploadFile
+    UploadFile,
+    getArchivosEspecialistas
 }
