@@ -65,12 +65,6 @@ export const FilesSpecialistsScreen = () => {
               )
             }
 
-
-        {/* <form onSubmit={submit} style={{width:650}} className="flex flex-col space-y-5 px-5 py-14">
-          <input onChange={fileSelected} type="file"></input>
-          <button type="submit">Submit</button>
-        </form> */}
-
     </Container>
   )
 }
