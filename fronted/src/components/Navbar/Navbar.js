@@ -44,11 +44,14 @@ export const Navbar = () => {
     const opcion = e.target.textContent;
     if(user.admin){
       switch (opcion) {
+        case "Citas":
+          navigate("/home");
+          break;
         case "Horario":
           navigate("/schedule");
           break;
         case "Pacientes":
-          navigate("/patients");
+          navigate(`/patients/${user.id}`);
           break;
         case "Estadísticas":
           navigate("/statistics");
@@ -200,7 +203,7 @@ export const Navbar = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Ver opciones">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar sx={{ bgcolor: "red" }}>{user.nombre[0]}</Avatar>
+                <Avatar sx={{ bgcolor: "white" }}><Typography sx={{color: "black", fontSize: 21}}>{user.nombre[0]}</Typography> </Avatar>
               </IconButton>
             </Tooltip>
             <Menu

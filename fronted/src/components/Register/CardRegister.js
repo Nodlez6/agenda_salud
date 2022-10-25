@@ -6,6 +6,7 @@ import {
   CardContent,
   CircularProgress,
   TextField,
+  Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import "./Register.css";
@@ -27,6 +28,7 @@ export const CardRegister = ({
       sx={{ backgroundColor: "#F6F6F6", borderRadius: 3 }}
     >
       <CardContent className="card__container_register">
+
         <TextField
           placeholder="John"
           className={sr.inputRegister}

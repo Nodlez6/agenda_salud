@@ -34,7 +34,7 @@ export const DashboardRoutes = () => {
         />
 
         <Route
-          path="/patients"
+          path="/patients/:id"
           element={
             <RoleRoutes>
               <PatientsScreen />

@@ -30,7 +30,23 @@ export const CardLogin = ({
       className={sl.cardLogin}
       sx={{ backgroundColor: "#F6F6F6", borderRadius: 3 }}
     >
+       
       <CardContent className="card__container">
+      <Typography
+            variant="h6"
+            noWrap
+            component="a"
+            sx={{
+              fontFamily: "monospace",
+              fontWeight: 600,
+              fontSize: "1.8rem",
+              color: "#1E56A0",
+              textDecoration: "none",
+            }}
+          >
+            AGENDA SALUD
+          </Typography>
+
         <Box sx={{ display: "flex", alignItems: "flex-end", width: "100%" }}>
           <AccountCircleIcon
             sx={{ fontSize: 35, color: "#1E56A0", mr: 0.5, mb: 0.5 }}
