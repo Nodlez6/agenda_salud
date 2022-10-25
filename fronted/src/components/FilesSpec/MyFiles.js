@@ -144,7 +144,7 @@ export const MyFiles = () => {
                             </Box>
                             
                             <InsertDriveFileIcon sx={{ fontSize: 80, color: "#163172" }}/> 
-                            <Link to={file.url} sx={{fontSize: 13, color: "#163172"}}>{file.url.split("/")[5].slice(0,21)}...</Link> 
+                            <a href={file.url} >{file.url.split("/")[5].slice(0,21)}...</a> 
                         </Box>
                 
                     </Card>
