@@ -42,13 +42,13 @@ const UploadFile = async (req, res) => {
 
 const DeleteFile = async (req, res) => {
     try {
-        console.log(req.query)
-        path=req.query.nombre+"_"+req.query.apellido+"_"+req.query.id+"/Mis_Archivos/"
-        const result = await deleteFile(path+req.query.nombre_archivo);
+    
+        path=req.body.nombre+"_"+req.body.apellido+"_"+req.body.id+"/Mis_Archivos/"
+        const result = await deleteFile(path+req.body.nombre_archivo);
         res.send(result);
         const borrar_Archivo=await prisma.archivos_especialistas.delete({
             where:{
-                id:Number(req.query.id_bdd)
+                id:Number(req.body.id_bdd)
             }
         })
     } catch (error) {
@@ -62,7 +62,6 @@ const getArchivosEspecialistas = async (req, res) => {
         const archivos_especialistas = await prisma.archivos_especialistas.findMany({
             where: { id_especialista: Number(id) }
         });
-        console.log(archivos_especialistas)
         res.status(200).json(archivos_especialistas);
     } catch (error) {
         res.status(500).json({ message: error.message });
