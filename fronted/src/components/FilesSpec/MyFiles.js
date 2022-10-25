@@ -1,5 +1,5 @@
 import { Box, Button, Card, CardActions, CardContent, Grid, Typography } from '@mui/material'
-import React, { useContext, useEffect } from 'react'
+import React, { useEffect,useContext } from 'react'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import CloseIcon from '@mui/icons-material/Close';
@@ -35,7 +35,7 @@ export const MyFiles = () => {
 
         const formData = new FormData();
         formData.append("image", files)
-        await axios.post(`${process.env.REACT_APP_API_URL}/files`, {formData: formData, id: user.id, nombre: user.nombre, apellido: user.apellido }, { headers: {'Content-Type': 'multipart/form-data'}})
+        await axios.post(`${process.env.REACT_APP_API_URL}/files`, formData,{params:{ id: user.id, nombre: user.nombre, apellido: user.apellido }}, { headers: {'Content-Type': 'multipart/form-data'}})
     }
   return (
     <>

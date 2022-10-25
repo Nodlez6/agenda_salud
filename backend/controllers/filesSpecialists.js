@@ -2,6 +2,7 @@ var AWS = require('aws-sdk/clients/s3');
 const fs = require('fs');
 const multer = require('multer');
 const { uploadFile, getFileList,getObject } = require('./s3')
+const prisma = require("../prisma/prismaClient");
 
 const bucketName = process.env.AWS_BUCKET;
 const region = process.env.AWS_REGION;
@@ -18,11 +19,21 @@ const upload = multer({ storage: storage })
 
 const UploadFile = async (req, res) => {
     try {
+        console.log(req.query)
+        path=req.query.nombre+"_"+req.query.apellido+"_"+req.query.id+"/Mis_Archivos/"
         const file = req.file;
-        console.log("poder")
         console.log(file)
-        const result = await uploadFile(file);
+        const result = await uploadFile(file,path);
         res.send(result);
+        const nombrefile=file.originalname.replace(" ","+")
+        const downlink="https://agenda-salud.s3.amazonaws.com/"+path+nombrefile
+        const archivos_especialistas=await prisma.archivos_especialistas.create({
+            data:{
+                id_especialista:Number(req.query.id),
+                url:downlink
+            }
+        })
+
     } catch (error) {
         console.log(error);
     }

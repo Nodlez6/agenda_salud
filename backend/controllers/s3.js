@@ -14,13 +14,13 @@ const s3 = new S3({
 })
 
 // uploads a file to s3
-function uploadFile(file) {
+function uploadFile(file,path) {
   
 
   const uploadParams = {
     Bucket: bucketName,
     Body: file.buffer,
-    Key: "public/"+file.originalname
+    Key: path+file.originalname
   }
 
   return s3.upload(uploadParams).promise()
