@@ -46,6 +46,11 @@ const DeleteFile = async (req, res) => {
         path=req.query.nombre+"_"+req.query.apellido+"_"+req.query.id+"/Mis_Archivos/"
         const result = await deleteFile(path+req.query.nombre_archivo);
         res.send(result);
+        const borrar_Archivo=await prisma.archivos_especialistas.delete({
+            where:{
+                id:Number(req.query.id_bdd)
+            }
+        })
     } catch (error) {
         console.log(error);
     }
