@@ -18,7 +18,7 @@ const getSpecialistById = async (req, res) => {
   try {
     const { id } = req.params;
     const specialist = await prisma.especialistas.findUnique({
-      where: { id: Number(id) },
+      where: { id: Number(id) }
     });
     res.status(200).json(specialist);
   } catch (error) {

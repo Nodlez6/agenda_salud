@@ -1,10 +1,11 @@
 import { Box, Button, Card, CardActions, CardContent, Grid, Typography } from '@mui/material'
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import CloseIcon from '@mui/icons-material/Close';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import axios from 'axios';
+import { AuthContext } from '../../auth/authContext';
 export const MyFiles = () => {
     const [files, setFile] = React.useState([])
     const [filesArray, setFilesArray] = React.useState([])
