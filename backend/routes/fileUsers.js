@@ -6,13 +6,16 @@ const upload = multer({ storage: storage })
 
 const {
     UploadFile,
-    getArchivosUsuarios,
-    DeleteFile
+    getArchivosUsuariosByUsuario,
+    DeleteFile,
+    getArchivosUsuariosByEspecialista
+
   } = require("../controllers/filesUsers");
  
   router.route("/").post( upload.single('image'),UploadFile);
   router.route("/delete").post(DeleteFile)
-  router.route("/:id").get(getArchivosUsuarios);
+  router.route("/:id_especialista/:id_usuario").get(getArchivosUsuariosByEspecialista);
+  router.route("/:id_usuario").get(getArchivosUsuariosByUsuario);
 
 
   module.exports = router;
