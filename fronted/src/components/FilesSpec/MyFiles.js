@@ -107,7 +107,7 @@ export const MyFiles = () => {
 
     const handleDelete = async() => {
         setOpenConfirm(false)
-        await axios.post(`${process.env.REACT_APP_API_URL}/files/delete`, {id_bdd: oneFile, id: user.id, nombre_archivo: oneFile.nombre_archivo})
+        await axios.post(`${process.env.REACT_APP_API_URL}/files/delete`, {id_bdd: oneFile.id, id: user.id, nombre_archivo: oneFile.nombre_archivo})
         .then(function (response) {
             notifySuccessDelete()
         }
