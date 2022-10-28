@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
-import { Button, Card, CardContent } from "@mui/material";
+import { Box, Button, Card, CardContent } from "@mui/material";
 import { FilesPacient } from './FilesPacient';
 import { MyFiles } from './MyFiles';
 import { Container } from '@mui/system';
@@ -38,6 +38,7 @@ export const FilesSpecialistsScreen = () => {
 
   return (
     <Container sx={{mt: 3}}>
+      <Box sx={{mb:2}}>
        <Button
             onClick={() => {
               setMyFilesShow(true);
@@ -54,6 +55,7 @@ export const FilesSpecialistsScreen = () => {
           >
             Archivos pacientes
           </Button>
+        </Box>
             {
               MyFilesShow && (
                 <MyFiles/>
@@ -64,6 +66,7 @@ export const FilesSpecialistsScreen = () => {
                 <FilesPacient/>
               )
             }
+        
 
     </Container>
   )

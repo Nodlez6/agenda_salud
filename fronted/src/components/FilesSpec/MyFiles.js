@@ -7,6 +7,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import axios from 'axios';
 import { AuthContext } from '../../auth/authContext';
 import { toast, ToastContainer } from 'react-toastify';
+import { ConfirmPopUp } from '../mui/ConfirmPopUp';
 
 export const MyFiles = () => {
     const [files, setFile] = React.useState([])
@@ -17,6 +18,10 @@ export const MyFiles = () => {
     const [spinner2, setSpinner2] = React.useState(false);
     const { user } = useContext(AuthContext);
     const [refresh, setRefresh] = React.useState(false);
+    const [openConfirm, setOpenConfirm] = React.useState(false);
+    const [titleConfirm, setTitleConfirm] = React.useState("");
+    const [textConfirm, setTextConfirm] = React.useState("");
+    const [oneFile, setoneFile] = React.useState(null);	
 
     const notifyError = () =>
     toast.error("No se ha podido subir el archivo", {
@@ -100,22 +105,42 @@ export const MyFiles = () => {
         );
     }
 
-    const handleDelete = async(file) => {
-        await axios.post(`${process.env.REACT_APP_API_URL}/files/delete`, {id_bdd: file.id, id: user.id})
+    const handleDelete = async() => {
+        setOpenConfirm(false)
+        await axios.post(`${process.env.REACT_APP_API_URL}/files/delete`, {id_bdd: oneFile, id: user.id, nombre_archivo: oneFile.nombre_archivo})
         .then(function (response) {
             notifySuccessDelete()
-            setRefresh(!refresh)
         }
         )
         .catch(function (error) {
             notifyErrorDelete()
         }
         );
+        const files_aux = []
+        filesArray.forEach(file => {
+            if(file.id !== oneFile){
+                files_aux.push(file)
+            }
+        });
+        setFilesArray(files_aux)
+    }
+    const handleOpenConfirm = (file) => {
+        setOpenConfirm(true)
+        setTitleConfirm("Eliminar archivo")
+        setTextConfirm("¿Está seguro que desea eliminar el archivo?")
+        setoneFile(file)
     }
 console.log(filesArray)
   return (
     <>
      <ToastContainer />
+     <ConfirmPopUp
+            open={openConfirm}
+            setOpen={setOpenConfirm}
+            title={titleConfirm}
+            content={textConfirm}
+            handleConfirm={handleDelete}
+          />
     <Box sx={{ width: '100%' }}>
             <input 
             ref={hiddenFileInput}
@@ -166,7 +191,7 @@ console.log(filesArray)
                     <Card sx={{width: "100%", height: 130 }}>
                         <Box sx={{height: "100%",display: "flex", flexDirection:"column", justifyContent: "center", alignItems: "center"}}>
                             <Box sx={{width: "100%", display: "flex", justifyContent: "end", mr: 2}}>
-                                <CloseIcon onClick={ () => handleDelete(file)}  sx={{fontSize: 16, color: "#163172", cursor:  "pointer"}} />
+                                <CloseIcon onClick={ () => handleOpenConfirm(file)}  sx={{fontSize: 16, color: "#163172", cursor:  "pointer"}} />
                                 
                             </Box>
                             
