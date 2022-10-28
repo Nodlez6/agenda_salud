@@ -63,5 +63,5 @@ const getArchivosUsuarios = async (req, res) => {
 module.exports = {
     DeleteFile,
     UploadFile,
-    getArchivosEspecialistas
+    getArchivosUsuarios
 }
