@@ -10,16 +10,18 @@ const prisma = require("../prisma/prismaClient");
 const UploadFile = async (req, res) => {
     try {
         console.log(req.query)
-        path=req.query.nombre+"_"+req.query.apellido+"_"+req.query.id+"/Mis_Archivos/"
+        path="Especialista_"+req.query.spec_id+"/Pacientes/Paciente_"+req.query.id+"/"
         const file = req.file;
         console.log(file)
         const result = await uploadFile(file,path);
         res.send(result);
         const nombrefile=file.originalname.replace(" ","+")
         const downlink="https://agenda-salud.s3.amazonaws.com/"+path+nombrefile
-        const archivos_especialistas=await prisma.archivos_especialistas.create({
+        const archivos_especialistas=await prisma.archivos_usuarios.create({
             data:{
-                id_especialista:Number(req.query.id),
+                id_especialista:Number(req.query.spec_id),
+                id_usuario:Number(req.query.id),
+                visible:false,
                 url:downlink,
                 nombre_archivo:file.originalname
             }
@@ -33,10 +35,10 @@ const UploadFile = async (req, res) => {
 const DeleteFile = async (req, res) => {
     try {
         console.log(req.query)
-        path=req.query.nombre+"_"+req.query.apellido+"_"+req.query.id+"/Mis_Archivos/"
+        path="Especialista_"+req.query.spec_id+"/Pacientes/Paciente_"+req.query.id+"/"
         const result = await deleteFile(path+req.query.nombre_archivo);
         res.send(result);
-        const borrar_Archivo=await prisma.archivos_especialistas.delete({
+        const borrar_Archivo=await prisma.archivos_usuarios.delete({
             where:{
                 id:Number(req.query.id_bdd)
             }
@@ -46,7 +48,7 @@ const DeleteFile = async (req, res) => {
     }
 };
 
-const getArchivosEspecialistas = async (req, res) => {
+const getArchivosUsuarios = async (req, res) => {
     try {
         const { id } = req.params;
         const archivos_especialistas = await prisma.archivos_especialistas.findMany({

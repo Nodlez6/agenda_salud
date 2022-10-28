@@ -7,11 +7,13 @@ const authRouter = require("./routes/authRouter");
 const schedulesRouter = require("./routes/schedulesRouter");
 const fileSpec = require("./routes/fileSpec");
 const quotesRouter = require("./routes/quotesRouter");
+const fileUsers = require("./routes/fileUsers");
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
+app.use("/userfile", fileUsers);
 app.use("/auth", authRouter);
 app.use("/users", usersRouter);
 app.use("/specialists", specialistsRouter);
