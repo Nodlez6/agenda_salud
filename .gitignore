@@ -17,6 +17,7 @@
 /fronted/.env.development.local
 /fronted/.env.test.local
 /fronted/.env.production.local
+/fornted/.env
 
 npm-debug.log*
 yarn-debug.log*
