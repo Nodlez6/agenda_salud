@@ -48,14 +48,32 @@ const DeleteFile = async (req, res) => {
     }
 };
 
-const getArchivosUsuarios = async (req, res) => {
+const getArchivosUsuariosByEspecialista = async (req, res) => {
     try {
-        const { id } = req.params;
-        const archivos_especialistas = await prisma.archivos_especialistas.findMany({
-            where: { id_especialista: Number(id) }
+        console.log(req.params)
+        const { id_especialista, id_usuario } = req.params;
+        const archivos_usuarios = await prisma.archivos_usuarios.findMany({
+            where: { id_especialista: Number(id_especialista),
+            id_usuario: Number(id_usuario) }
         });
-        console.log(archivos_especialistas)
-        res.status(200).json(archivos_especialistas);
+       
+        res.status(200).json(archivos_usuarios);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+const getArchivosUsuariosByUsuario = async (req, res) => {
+    try {
+        const { id_usuario } = req.params;
+        const archivos_usuarios = await prisma.archivos_usuarios.findMany({
+            where: { id_usuario: Number(id_usuario) },
+            include: {
+                usuario: true,
+            },
+        });
+       
+        res.status(200).json(archivos_usuarios);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -63,5 +81,6 @@ const getArchivosUsuarios = async (req, res) => {
 module.exports = {
     DeleteFile,
     UploadFile,
-    getArchivosUsuarios
+    getArchivosUsuariosByEspecialista,
+    getArchivosUsuariosByUsuario
 }

@@ -98,8 +98,8 @@ export const CardLogin = ({
 
       <CardActions>
         <div className="Card__actions">
-          <Link to="/register" className="register_link">
-            Registrarse
+        <Link to="/emailMessage" className="register_link">
+            Olvidé mi contraseña
           </Link>
           <form onSubmit={handleSubmit} style={{ width: "100%" }}>
             <Button
@@ -124,6 +124,9 @@ export const CardLogin = ({
               )}
             </Button>
           </form>
+          <Link to="/register" className="register_link">
+            Registrarse
+          </Link>
         </div>
       </CardActions>
     </Card>
