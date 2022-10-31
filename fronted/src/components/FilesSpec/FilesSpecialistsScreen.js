@@ -19,10 +19,12 @@ export const FilesSpecialistsScreen = () => {
 
   const submit = async event => {
     event.preventDefault()
+    var now=new Date();
+    console.log(now)
 
-    const formData = new FormData();
-    formData.append("image", file)
-    await axios.post(`${process.env.REACT_APP_API_URL}/files`, formData, { headers: {'Content-Type': 'multipart/form-data'}})
+    // const formData = new FormData();
+    // formData.append("image", file)
+    // await axios.post(`${process.env.REACT_APP_API_URL}/files`, formData, { headers: {'Content-Type': 'multipart/form-data'}})
   }
   // const submit = async event => {
   //   event.preventDefault()

@@ -1,5 +1,6 @@
 const moment = require("moment");
 const prisma = require("../prisma/prismaClient");
+const { ConfirmarHora  } = require('./confirmController')
 
 const createQuote = async (req, res) => {
 
@@ -18,6 +19,7 @@ const createQuote = async (req, res) => {
                 hasta: new Date(item.hasta),
               },
             });
+            ConfirmarHora(quotes.id,quotes.fecha,quotes.desde,quotes.id_usuario)
           });
           res.status(200).json(quotes);
     } catch (error) {
