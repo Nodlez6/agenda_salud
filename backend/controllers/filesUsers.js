@@ -34,13 +34,13 @@ const UploadFile = async (req, res) => {
 
 const DeleteFile = async (req, res) => {
     try {
-        console.log(req.query)
-        path="Especialista_"+req.query.spec_id+"/Pacientes/Paciente_"+req.query.id+"/"
-        const result = await deleteFile(path+req.query.nombre_archivo);
+        console.log(req.body)
+        path="Especialista_"+req.body.spec_id+"/Pacientes/Paciente_"+req.body.id+"/"
+        const result = await deleteFile(path+req.body.nombre_archivo);
         res.send(result);
         const borrar_Archivo=await prisma.archivos_usuarios.delete({
             where:{
-                id:Number(req.query.id_bdd)
+                id:Number(req.body.id_bdd)
             }
         })
     } catch (error) {

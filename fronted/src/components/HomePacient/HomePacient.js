@@ -19,6 +19,8 @@ export const HomePacient = () => {
   const [especialidad, setEspecialidad] = React.useState("");
   const [specialists, setEspecialists] = React.useState([]);
   const [spinner, setSpinner] = React.useState(false);
+  const [ShowButton, setShowButton] = React.useState(false);
+  const [token, setToken] = React.useState("");
 
   const handleChange = (event) => {
     setSpinner(true);
@@ -99,6 +101,19 @@ export const HomePacient = () => {
           );
         })
       )}
+      <Button variant="contained" onClick={()=>{axios.post(`${process.env.REACT_APP_API_URL}/transaction/create`,{
+        id: 1,
+        amount: 1000
+      }).then((response)=>{
+        console.log(response)
+        setToken(response.data.token)
+        setShowButton(true)
+      })
+      }}></Button>
+      {ShowButton && <form action="https://webpay3gint.transbank.cl/webpayserver/initTransaction" method="POST">
+   <input type="hidden" name="token_ws" value={token}/>
+   <input type="submit" value="Pagar"/>
+</form>} 
     </Container>
   );
 };
