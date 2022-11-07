@@ -34,7 +34,6 @@ export default function QuotesTable() {
         console.log(response.data);
         const dataAux = [];
         response.data.forEach((quote) => {
-          console.log("tre")
           dataAux.push({
             id: quote.id,
             fecha: quote.fecha,
@@ -45,10 +44,7 @@ export default function QuotesTable() {
           });
         }
         );
-        console.log(dataAux);
         setQuotes(dataAux);
-        console.log(quotesState);
-        
       }
     })
     .catch(function (error) {
@@ -84,7 +80,7 @@ export default function QuotesTable() {
     setOpenConfirm(true);
     setIdQuote(id);
   };
-  console.log(quotesState)
+
 
   return (
     <>

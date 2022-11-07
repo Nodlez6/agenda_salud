@@ -62,7 +62,7 @@ export const Semanal = ({
     const data = [];
     horarioMañana.forEach((item) => {
       if (item.select) {
-        console.log(item);
+
         data.push({
           desde: toDate(item.desde, "h:m"),
           hasta: toDate(item.hasta, "h:m"),
@@ -87,7 +87,6 @@ export const Semanal = ({
     });
 
     let isMounted = true;
-    console.log( new Date(day_quote))
     axios
       .post(`${process.env.REACT_APP_API_URL}/schedules`, {
         idEspecialista: user.id,

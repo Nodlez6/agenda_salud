@@ -91,7 +91,6 @@ export const Diario = ({
 
   const handleSaveQuote = () => {
     const data = getFormatDate();
-    console.log(data);
     let isMounted = true;
     axios
       .post(`${process.env.REACT_APP_API_URL}/schedules`, {

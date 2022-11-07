@@ -47,7 +47,6 @@ export const MyFiles = () => {
         const file = event.target.files[0]
         setFile(file)
         setIsValid(false)
-        console.log(file)
     
     }
     useEffect(() => {
@@ -66,7 +65,6 @@ export const MyFiles = () => {
                 if (isMounted) {
                     setFilesArray(response.data)
                     setSpinner2(false);
-                    console.log(response)
                 }
             }
             )
@@ -117,8 +115,9 @@ export const MyFiles = () => {
         }
         );
         const files_aux = []
+        console.log(oneFile)
         filesArray.forEach(file => {
-            if(file.id !== oneFile){
+            if(file.id !== oneFile.id){
                 files_aux.push(file)
             }
         });
@@ -130,7 +129,6 @@ export const MyFiles = () => {
         setTextConfirm("¿Está seguro que desea eliminar el archivo?")
         setoneFile(file)
     }
-console.log(filesArray)
   return (
     <>
      <ToastContainer />

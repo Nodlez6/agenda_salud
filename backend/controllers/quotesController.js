@@ -31,8 +31,13 @@ const deleteQuote = async (req, res) => {
     console.log(req.params)
     try {
         const { id } = req.params;
-        const deleted = await prisma.citas.delete({
-            where: { id: Number(id) },
+        const update = await prisma.citas.update({
+            where: {
+                id: Number(id),
+            },
+            data: {
+                deletedat: new Date(),
+            },
         });
         if (deleted) {
         return res.status(200).send(deleted);
@@ -51,6 +56,7 @@ const getQuotesByPacient = async (req, res) => {
         const quotes = await prisma.citas.findMany({
             where: {
                 id_usuario: Number(pacientId),
+                deletedat: null,
             },
             include: {
                 especialistas: true,
@@ -76,6 +82,7 @@ const getQuotesBySpecialistWithoutInclude = async (req, res) => {
         const quotes = await prisma.citas.findMany({
             where: {
                 id_especialista: Number(specialistId),
+                deletedat: null,
             },
         });
       

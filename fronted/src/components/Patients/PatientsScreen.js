@@ -1,4 +1,4 @@
-import { Button, Card, Container, Grid, Typography } from "@mui/material";
+import { Box,CircularProgress, Button, Card, Container, Grid, Typography } from "@mui/material";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -9,11 +9,11 @@ export const PatientsScreen = () => {
   const { user } = useContext(AuthContext);
   const { id } = useParams();
   const [patients, setPatients] = useState([]);
-  console.log(id);
+  const [spinner, setSpinner] = useState(false);
  // /pacientes/:idEspecialidad
   useEffect(() => {
     let isMounted = true;
-    console.log(user);
+    setSpinner(true);
     axios
       .get(`${process.env.REACT_APP_API_URL}/specialists/pacientes/${id}`)
       .then(function (response) {
@@ -21,11 +21,22 @@ export const PatientsScreen = () => {
           const data = []
           response.data.forEach((element) => {
             data.push(element.usuarios)
-            console.log(data);
           });
 
-          setPatients(data);
-        console.log(patients);
+          const uniqueObj = []
+          //remove duplicates from array
+          const unique = data.filter(elem => {
+            const isDuplicate = uniqueObj.includes(elem.id);
+            if(!isDuplicate){
+              uniqueObj.push(elem.id)
+              return true
+            }
+            return false
+          })
+
+          setPatients(unique);
+          setSpinner(false);
+  
         }
       })
       .catch(function (error) {
@@ -40,21 +51,23 @@ export const PatientsScreen = () => {
   return ( 
     <>
       <Container sx={{mt: 3}}>
-        <Grid container columnSpacing={2}>
+        {spinner ? ( <Box sx={{display: "flex", justifyContent: "center", alignContent: "center" }}>
+            <CircularProgress size={"1.9rem"} />
+            </Box>) : ( <Grid container columnSpacing={2}>
           {patients.map((patient) => (
-            <Grid key={patient.id} item xs={12} xl={4}>
+            <Grid key={patient.id} item xs={12} md={4}>
                 <Card sx={{ display: 'flex', maxWidth: 260, height: 120, padding: 2 }}>
                   <Grid container columnSpacing={2}>
                     <Grid item xs={9} sx={{display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", rowGap: 1}}>
                       
-                        <Typography sx={{fontSize: 15}}>
-                          {patient.nombre} {patient.apellido}             
+                        <Typography sx={{fontSize: 13}}>
+                          Nombre: {patient.nombre} {patient.apellido}             
                         </Typography>
-                        <Typography sx={{fontSize: 15}}>
-                          {patient.correo}             
+                        <Typography sx={{fontSize: 13}}>
+                          Correo: {patient.correo}             
                         </Typography>
-                        <Typography sx={{fontSize: 15}}>
-                          {patient.celular}             
+                        <Typography sx={{fontSize: 13}}>
+                          Celular: {patient.celular}             
                         </Typography>
           
                     </Grid>
@@ -66,7 +79,8 @@ export const PatientsScreen = () => {
                 </Card>
               </Grid>
           ))}
-        </Grid>
+        </Grid>)}
+       
       </Container>
     </>
   );
