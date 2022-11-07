@@ -66,7 +66,8 @@ const getPacientsByQuoteAndSpecialist = async (req, res) => {
   console.log(idEspecialidad);
   try {
     const pacients = await prisma.citas.findMany({
-      where: { id_especialista: Number(idEspecialidad) },
+      where: { id_especialista: Number(idEspecialidad),
+      deletedat: null, },
       include: { usuarios: true },
     });
 

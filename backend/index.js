@@ -10,6 +10,7 @@ const quotesRouter = require("./routes/quotesRouter");
 const fileUsers = require("./routes/fileUsers");
 const confirmhour = require("./routes/ConfirmarRoute")
 const transaction = require("./routes/transaction")
+const statisticsRouter = require("./routes/statisticsRouter");
 
 const app = express();
 app.use(express.json());
@@ -24,6 +25,7 @@ app.use("/files", fileSpec);
 app.use("/quotes",quotesRouter);
 app.use("/transaction",transaction)
 
+app.use("/statistics", statisticsRouter);
 /*
 
 app.use("/quotes", quotesRouter);

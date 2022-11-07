@@ -1,6 +1,6 @@
 import React from "react";
 // or
-import { CircularProgress, Container } from "@mui/material";
+import { CircularProgress, Container, Grid } from "@mui/material";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -32,7 +32,6 @@ export const HomePacient = () => {
         if (isMounted) {
           setSpinner(false);
           //notifySuccess();
-          console.log(response.data);
           setEspecialists(response.data);
         }
       })
@@ -77,29 +76,28 @@ export const HomePacient = () => {
           <CircularProgress size={"1.5rem"} />
         </Box>
       ) : (
-        specialists.map((specialist) => {
-          return (
-            <Card key={specialist.id} sx={{ maxWidth: 345 }}>
-              <CardMedia
-                component="img"
-                height="140"
-                image="/static/images/cards/contemplative-reptile.jpg"
-                alt="green iguana"
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  {specialist.nombre}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {specialist.especialidad}
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Link to={`/homepacient/specialist/${specialist.id}`}>aa</Link>
-              </CardActions>
-            </Card>
-          );
-        })
+        <Grid container columnSpacing={2} rowSpacing={2}>
+          {specialists.map((specialist) => {
+            
+            return (
+              <Grid  key={specialist.id} item xs={9}  md={3}>
+                <Card sx={{ maxWidth: 300, padding: 2 }}>
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {specialist.nombre}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {specialist.especialidad}
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Link to={`/homepacient/specialist/${specialist.id}`}>Ver Horario</Link>
+                  </CardActions>
+                </Card>
+              </Grid>
+            );
+          })}
+        </Grid>
       )}
       <Button variant="contained" onClick={()=>{axios.post(`${process.env.REACT_APP_API_URL}/transaction/create`,{
         id: 1,
@@ -114,6 +112,7 @@ export const HomePacient = () => {
    <input type="hidden" name="token_ws" value={token}/>
    <input type="submit" value="Pagar"/>
 </form>} 
+
     </Container>
   );
 };

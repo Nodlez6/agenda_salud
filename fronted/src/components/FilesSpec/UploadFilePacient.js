@@ -1,4 +1,4 @@
-import { Box, Button, Card, CircularProgress, Grid, Link, Typography } from '@mui/material';
+import { Box, Button, Card, Checkbox, CircularProgress, Grid, Link, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect } from 'react'
 import { toast, ToastContainer } from 'react-toastify';
@@ -45,8 +45,6 @@ export const UploadFilePacient = ({user, idPaciente}) => {
         const file = event.target.files[0]
         setFile(file)
         setIsValid(false)
-        console.log(file)
-    
     }
     useEffect(() => {
         if(files === undefined){
@@ -62,9 +60,9 @@ export const UploadFilePacient = ({user, idPaciente}) => {
             .get(`${process.env.REACT_APP_API_URL}/userfile/${user.id}/${idPaciente}`)
             .then(function (response) {
                 if (isMounted) {
-                   
+                   setFilesArray(response.data)
+                   console.log(response.data)
                     setSpinner2(false);
-                    console.log(response.data)
                 }
             }
             )
@@ -89,7 +87,7 @@ export const UploadFilePacient = ({user, idPaciente}) => {
         setFile(null)
         const formData = new FormData();
         formData.append("image", files)
-        await axios.post(`${process.env.REACT_APP_API_URL}/files`, formData,{params:{ id: user.id}}, { headers: {'Content-Type': 'multipart/form-data'}})
+        await axios.post(`${process.env.REACT_APP_API_URL}/userfile`, formData,{params:{ spec_id: user.id, id: idPaciente }}, { headers: {'Content-Type': 'multipart/form-data'}})
         .then(function (response) {
             notifySuccess()
             setSpinner(false)
@@ -105,7 +103,7 @@ export const UploadFilePacient = ({user, idPaciente}) => {
 
     const handleDelete = async() => {
         setOpenConfirm(false)
-        await axios.post(`${process.env.REACT_APP_API_URL}/files/delete`, {id_bdd: oneFile.id, id: user.id, nombre_archivo: oneFile.nombre_archivo})
+        await axios.post(`${process.env.REACT_APP_API_URL}/userfile/delete`, {id_bdd: oneFile.id, spec_id: user.id, nombre_archivo: oneFile.nombre_archivo, id: idPaciente})
         .then(function (response) {
             notifySuccessDelete()
         }
@@ -122,6 +120,31 @@ export const UploadFilePacient = ({user, idPaciente}) => {
         });
         setFilesArray(files_aux)
     }
+
+    const handleChangeVisible = async(id, visible) => {
+        await axios.post(`${process.env.REACT_APP_API_URL}/files/visible`, {id_bdd: id, visible: visible})
+        .then(function (response) {
+            notifySuccessDelete()
+        }
+        )
+        .catch(function (error) {
+            notifyErrorDelete()
+        }
+        );
+    }
+
+    const checkboxFile = (id) => {
+        const aux = filesArray
+        aux.forEach(file => {
+            if(file.id === id){
+                file.visible = !file.visible
+            }
+        }
+        )
+        setFilesArray(aux)
+        console.log(aux)
+    }
+
     const handleOpenConfirm = (file) => {
         setOpenConfirm(true)
         setTitleConfirm("Eliminar archivo")
@@ -177,7 +200,8 @@ export const UploadFilePacient = ({user, idPaciente}) => {
         
             </Card>
             
-      </Box>      
+      </Box>
+      <Button onClick={handleChangeVisible} sx={{backgroundColor: "#163172", mt:3,  color: "white", "&:hover": {backgroundColor: "#1d4197", transition: "0.4s",}}}>Actualizar</Button>
         
          <Grid sx={{mt: 3, backgroundColor: "white", boxShadow: 2, height: "23rem", overflow: "auto", padding: 3}} container columnSpacing={1.5} rowSpacing={1.5}>
             {spinner2 ? (<Box sx={{display: "flex", justifyContent: "center", alignContent: "center" }}>
@@ -185,9 +209,10 @@ export const UploadFilePacient = ({user, idPaciente}) => {
             </Box>) : (filesArray.map((file) => (
                 
             <Grid key={file.id} item md={2} xs={6}>
-                    <Card sx={{width: "100%", height: 130 }}>
+                    <Card sx={{width: "100%", height: 150 }}>
                         <Box sx={{height: "100%",display: "flex", flexDirection:"column", justifyContent: "center", alignItems: "center"}}>
-                            <Box sx={{width: "100%", display: "flex", justifyContent: "end", mr: 2}}>
+                            <Box sx={{width: "100%", display: "flex", justifyContent: "space-between", mr: 2, alignItems: "center"}}>
+                                <Checkbox checked={file.visible} onClick={() => checkboxFile(file.id)}/>
                                 <CloseIcon onClick={ () => handleOpenConfirm(file)}  sx={{fontSize: 16, color: "#163172", cursor:  "pointer"}} />
                                 
                             </Box>

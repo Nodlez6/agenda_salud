@@ -1,7 +1,36 @@
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'recharts';
-import React from 'react'
+import { BarChart,Bar, CartesianGrid, XAxis, YAxis, Tooltip, Legend } from 'recharts';
+import React, { useContext, useEffect } from 'react'
+import axios from 'axios';
+import { AuthContext } from '../../auth/authContext';
+import { Card, Container, Typography } from '@mui/material';
 
 export const StatisticsScreen = () => {
+  const { user } = useContext(AuthContext);
+  const [dataCountDate, setDataCountDate] = React.useState([]);
+  useEffect(() => {
+    let isMounted = true;
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/statistics/${user.id}`)
+      .then(function (response) {
+        if (isMounted) {
+          console.log(response.data);
+          const data = response.data.map((item) => {
+            return {
+              fecha: item.fecha.split("T")[0],
+              Cantidad: item._count.fecha,
+            }
+          }
+          )
+          setDataCountDate(data);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
   const data = [
     {
       name: 'Page A',
@@ -48,24 +77,30 @@ export const StatisticsScreen = () => {
   ];
 
   return (
-    <LineChart
-          width={500}
-          height={300}
-          data={data}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-          <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-        </LineChart>
+    <Container>
+      <Card sx={{width: 540, height:350, mt:4, padding: 1}}>
+      <Typography sx={{
+                      fontFamily: "monospace",
+                      fontWeight: 400,
+                      fontSize: 14,
+                      color: "black",
+                      textDecoration: "none",
+                      textAlign: "center",
+                    }}>Cantidad de citas en el dia</Typography>
+        <BarChart
+              width={500}
+              height={300}
+              data={dataCountDate}
+              
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="fecha" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="Cantidad" fill="#163172" />
+            </BarChart>
+          </Card>
+      </Container>
   )
 }

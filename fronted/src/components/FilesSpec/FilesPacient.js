@@ -1,5 +1,5 @@
 import { useTheme } from '@emotion/react';
-import { Box, Button, Card, CardContent, CardMedia, Grid, IconButton, Typography } from '@mui/material'
+import { Box, Button, Card, CardContent, CardMedia, Grid, IconButton, Typography, CircularProgress } from '@mui/material'
 import React, { useContext, useEffect } from 'react'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { AuthContext } from '../../auth/authContext';
@@ -12,6 +12,7 @@ export const FilesPacient = () => {
   const [idPaciente, setIdPaciente] = React.useState("");
   const [showPacieentes, setShowPacientes] = React.useState(true);
   const [showFiles, setShowFiles] = React.useState(false);
+  const [spinner, setSpinner] = React.useState(false);
 
   const theme = useTheme();
 
@@ -23,7 +24,7 @@ export const FilesPacient = () => {
 
   useEffect(() => {
     let isMounted = true;
-
+    setSpinner(true);
     axios
       .get(`${process.env.REACT_APP_API_URL}/specialists/pacientes/${user.id}`)
       .then(function (response) {
@@ -32,8 +33,18 @@ export const FilesPacient = () => {
           response.data.forEach((element) => {
             data.push(element.usuarios)
           });
-          console.log(data);
-          setPacientes(data);
+          const uniqueObj = []
+          //remove duplicates from array
+          const unique = data.filter(elem => {
+            const isDuplicate = uniqueObj.includes(elem.id);
+            if(!isDuplicate){
+              uniqueObj.push(elem.id)
+              return true
+            }
+            return false
+          })
+          setPacientes(unique);
+          setSpinner(false);
         }
       })
       .catch(function (error) {
@@ -47,37 +58,39 @@ export const FilesPacient = () => {
 
   return (
     <div>
+      {spinner && <Box sx={{display: "flex", justifyContent: "center", alignContent: "center" }}>
+            <CircularProgress size={"1.9rem"} />
+            </Box>}
+      {showPacieentes && 
+       (<Grid container columnSpacing={2} rowSpacing={2}>
+        
+          {pacientes.map((paciente) => (
+            <Grid key={paciente.id} item xs={9}  md={3}>
+              <Card  sx={{ display: 'flex', maxWidth: 250, height: 80, padding: 2 }}>
+                <Grid item xs={9} sx={{display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", rowGap: 1}}>
+                  
+                    <Typography sx={{fontSize: 15}}>
+                      {paciente.nombre} {paciente.apellido}
+                    </Typography>
+                    <Button onClick={() => showComponentFiles(paciente.id)} sx={{backgroundColor: "#163172",
+                      color: "white",
+                      "&:hover": {
+                        backgroundColor: "#1d4197",
+                        transition: "0.4s",
+                      }}}>
+                      <Typography sx={{fontSize: 11}}>
+                        Archivos
+                      </Typography>
+                    </Button>
       
-      {showPacieentes && pacientes.map((paciente) => (
-         <Card key={paciente.id} sx={{ display: 'flex', maxWidth: 250, height: 80, padding: 2 }}>
-         <Grid container columnSpacing={2}>
-           <Grid item xs={9} sx={{display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", rowGap: 1}}>
-             
-               <Typography sx={{fontSize: 15}}>
-                 {paciente.nombre} {paciente.apellido}
-               </Typography>
-               <Button onClick={() => showComponentFiles(paciente.id)} sx={{backgroundColor: "#163172",
-                 color: "white",
-                 "&:hover": {
-                   backgroundColor: "#1d4197",
-                   transition: "0.4s",
-                 }}}>
-                 <Typography sx={{fontSize: 11}}>
-                   Archivos
-                 </Typography>
-               </Button>
- 
-           </Grid>
-         
-         <Grid item xs={3} sx={{display: "flex", justifyContent: "center", alignItems: "center"}} >
-           <AccountCircleIcon sx={{ width: 50, height: 50, color: "#163172" }} />
-         </Grid>
-       
-       
- 
-         </Grid>
-       
-     </Card>)) }
+                </Grid>
+              
+              <Grid item xs={3} sx={{display: "flex", justifyContent: "center", alignItems: "center"}} >
+                <AccountCircleIcon sx={{ width: 50, height: 50, color: "#163172" }} />
+              </Grid>
+            </Card>
+            </Grid>))}
+     </Grid>)} 
       
      {showFiles && <UploadFilePacient
       user={user}

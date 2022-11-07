@@ -1,3 +1,4 @@
+import Refresh from "@mui/icons-material/Refresh";
 import { Button, Card, CardContent, CircularProgress, Container, Grid, TextField, Typography } from "@mui/material";
 import { Box, flexbox } from "@mui/system";
 import { StaticDatePicker } from "@mui/x-date-pickers";
@@ -18,7 +19,6 @@ function toDate(dStr, format) {
 }
 
 const formatSelectedDate = (data,quotesTaked ) => {
-  console.log(quotesTaked)
   let data_final = [];
   const dates_without_period = [];
   data.forEach((elem) => {
@@ -50,7 +50,6 @@ const formatSelectedDate = (data,quotesTaked ) => {
     }
   });
  
-  console.log(data_final);
   quotesTaked.forEach((elem) => {
     data_final = data_final.filter((item) =>(item.fecha === elem.fecha.slice(0,10) && item.desde === elem.desde && item.hasta === elem.hasta) ? false : true);
   });
@@ -81,7 +80,6 @@ export const SpecialistScheduler = () => {
     let data_aux = [];
     let suma = (date.getDate() < 10) ? "0" : "";
     let dateCompare = date.getFullYear()+ '-' + (date.getMonth()+1) + '-' + suma + date.getDate();
-    console.log(data_final)
     data_final.forEach((elem) => {
       if(elem.fecha === dateCompare){
         data_aux.push({ desde: elem.desde, hasta: elem.hasta, select: false});        
@@ -101,8 +99,6 @@ export const SpecialistScheduler = () => {
     ])
       .then(function (response) {
         if (isMounted) {
-          console.log(response[1].data);
-          console.log(response[0].data);
           data_final = formatSelectedDate(response[1].data, response[0].data);
           setSpinner(false);
         }
@@ -143,12 +139,18 @@ export const SpecialistScheduler = () => {
    })
    .then(function (response) {
         notifySuccess();
-        let dateCompare = value.getFullYear()+ '-' + (value.getMonth()+1) + '-' + value.getDate();
+        console.log(bloqueHora)
+        let suma = (value.getDate() < 10) ? "0" : "";
+    let dateCompare = value.getFullYear()+ '-' + (value.getMonth()+1) + '-' + suma + value.getDate();
+        console.log(dateCompare)
         bloqueHora.forEach((elem) => {
-          console.log(data_final)
-          console.log(elem)
-          data_final = data_final.filter((item) =>(item.fecha === dateCompare && item.desde === elem.desde && item.hasta === elem.hasta && elem.select === true) ? false : true);
+          if(elem.select){
+            
+            data_final = data_final.filter((item) => (item.fecha === dateCompare && item.desde === elem.desde && item.hasta === elem.hasta) ? false : true);
+        
+          }
         });
+        
         setBloqueHora([]);
         setValue(null);
         console.log(response);
@@ -195,6 +197,7 @@ export const SpecialistScheduler = () => {
                           ? {
                               backgroundColor: "#D6E4F0",
                               mr: 1,
+                              mb: 1,
                               "&:hover": {
                                 backgroundColor: "#D6E4F0",
         
@@ -205,6 +208,7 @@ export const SpecialistScheduler = () => {
                               backgroundColor: "#163172",
                               color: "white",
                               mr: 1,
+                              mb: 1,
                               "&:hover": {
                                 backgroundColor: "#D6E4F0",
                                 color: "black",

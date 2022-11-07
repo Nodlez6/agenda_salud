@@ -129,7 +129,6 @@ export default function TablaHorario({ refresh, url }) {
     axios
       .get(`${process.env.REACT_APP_API_URL}${url}${user.id}`)
       .then(function (response) {
-        console.log(response);
         setSpinnerTabla(false);
         if (isMounted) {
           setRowsState([
@@ -162,7 +161,7 @@ export default function TablaHorario({ refresh, url }) {
               Horas: response.data?.domingo,
             },
           ]);
-          console.log(rowsState);
+     
         }
       })
       .catch(function (error) {
@@ -197,7 +196,6 @@ export default function TablaHorario({ refresh, url }) {
     });
     setRowsState(dataFinal);
 
-    console.log(idHora);
   };
 
   return (
