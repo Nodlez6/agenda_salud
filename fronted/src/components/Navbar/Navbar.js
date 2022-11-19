@@ -28,7 +28,7 @@ export const Navbar = () => {
   if (user.admin) {
     pages = ["Citas", "Horario", "Pacientes", "Estadísticas", "Archivos"];
   } else {
-    pages = ["Inicio","Citas", "Archivos"];
+    pages = ["Inicio","Citas"];
   }
   const settings = ["Perfil", "Cerrar sesión"];
 

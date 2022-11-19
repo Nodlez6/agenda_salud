@@ -1,4 +1,4 @@
-import { Box, Button, Card, Checkbox, CircularProgress, Grid, Link, Typography } from '@mui/material';
+import { Box, Button, Card, CircularProgress, Grid, Link, Typography } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect } from 'react'
 import { toast, ToastContainer } from 'react-toastify';
@@ -133,17 +133,6 @@ export const UploadFilePacient = ({user, idPaciente}) => {
         );
     }
 
-    const checkboxFile = (id) => {
-        const aux = filesArray
-        aux.forEach(file => {
-            if(file.id === id){
-                file.visible = !file.visible
-            }
-        }
-        )
-        setFilesArray(aux)
-        console.log(aux)
-    }
 
     const handleOpenConfirm = (file) => {
         setOpenConfirm(true)
@@ -209,10 +198,10 @@ export const UploadFilePacient = ({user, idPaciente}) => {
             </Box>) : (filesArray.map((file) => (
                 
             <Grid key={file.id} item md={2} xs={6}>
-                    <Card sx={{width: "100%", height: 150 }}>
+                    <Card sx={{width: "100%", height: 130 }}>
                         <Box sx={{height: "100%",display: "flex", flexDirection:"column", justifyContent: "center", alignItems: "center"}}>
-                            <Box sx={{width: "100%", display: "flex", justifyContent: "space-between", mr: 2, alignItems: "center"}}>
-                                <Checkbox checked={file.visible} onClick={() => checkboxFile(file.id)}/>
+                            <Box sx={{width: "100%", display: "flex", justifyContent: "end", mr: 2, alignItems: "center"}}>
+        
                                 <CloseIcon onClick={ () => handleOpenConfirm(file)}  sx={{fontSize: 16, color: "#163172", cursor:  "pointer"}} />
                                 
                             </Box>

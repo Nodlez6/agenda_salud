@@ -99,7 +99,7 @@ export const HomePacient = () => {
           })}
         </Grid>
       )}
-      <Button variant="contained" onClick={()=>{axios.post(`${process.env.REACT_APP_API_URL}/transaction/create`,{
+      {/* <Button variant="contained" onClick={()=>{axios.post(`${process.env.REACT_APP_API_URL}/transaction/create`,{
         id: 1,
         amount: 1000
       }).then((response)=>{
@@ -111,7 +111,7 @@ export const HomePacient = () => {
       {ShowButton && <form action="https://webpay3gint.transbank.cl/webpayserver/initTransaction" method="POST">
    <input type="hidden" name="token_ws" value={token}/>
    <input type="submit" value="Pagar"/>
-</form>} 
+</form>}  */}
 
     </Container>
   );

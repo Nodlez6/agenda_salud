@@ -4,7 +4,6 @@ const prisma = require("../prisma/prismaClient");
 const getMostHoursTaken = async (req, res) => {
     
     const { id } = req.params;
-    console.log(id)
 
     try {
         const hoursTaken = await prisma.citas.groupBy({

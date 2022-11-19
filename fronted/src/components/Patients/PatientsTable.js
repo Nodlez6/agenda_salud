@@ -76,79 +76,17 @@ function TablePaginationActions(props) {
   );
 }
 
-export default function CustomPaginationActionsTable() {
+export default function PatientsTable({patients}) {
+    console.log(patients);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const { user } = React.useContext(AuthContext);
-  const [spinner, setSpinner] = React.useState(false)
-  const [openConfirm, setOpenConfirm] = React.useState(false);
-  const [titleConfirm, setTitleConfirm] = React.useState("");
-  const [textConfirm, setTextConfirm] = React.useState("");
-  const [idQuote, setIdQuote] = React.useState("");
-  const [quotesState, setQuotes] = React.useState([]);
-  const [search, setSearch] = React.useState("");
+    const [spinner, setSpinner] = React.useState(true);
+    const [search, setSearch] = React.useState("");
 
-  React.useEffect(() => {
-  setSpinner(true);
-  let isMounted = true;
-  axios
-  .get(`${process.env.REACT_APP_API_URL}/quotes/pacient/${user.id}`)
-    .then(function (response) {
-      if (isMounted) {
-         setSpinner(false);
-        //notifySuccess();
-        console.log(response.data);
-        const dataAux = [];
-        response.data.forEach((quote) => {
-          dataAux.push({
-            id: quote.id,
-            fecha: quote.fecha,
-            desde: quote.desde,
-            hasta: quote.hasta,
-            nombre: quote.especialistas.nombre + " " + quote.especialistas.apellido,
-            especialidad: quote.especialistas.especialidad,
-          });
-        }
-        );
-        setQuotes(dataAux);
-      }
-    })
-    .catch(function (error) {
-      //notifyError();
-    });
-  return () => {
-    isMounted = false;
-  };
-  }, [])  
-  
-  const handleConfirm = () => {
-    setOpenConfirm(false);
-    axios
-      .delete(`${process.env.REACT_APP_API_URL}/quotes/${idQuote}`)
-      .then(function (response) {
-        console.log(response);
-      }
-      )
-      .catch(function (error) {
-        console.log(error);
-      }
-      );
-  
-    const aux = quotesState.filter((quote) => quote.id !== idQuote);
-    setQuotes(aux);
-  };
- const rows = []
-
-
-  const deleteQuote = (id) => {
-    setTitleConfirm("¿Estás seguro de eliminar esta cita?");
-    setTextConfirm("Esta acción no se puede deshacer");
-    setOpenConfirm(true);
-    setIdQuote(id);
-  };
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - quotesState.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - patients.length) : 0;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -163,7 +101,7 @@ export default function CustomPaginationActionsTable() {
     <>
      <TextField
      onChange={(e) => setSearch(e.target.value)}
-      id="outlined-basic" label="Filtrar por fecha" variant="outlined"
+      id="outlined-basic" label="Filtrar por paciente o correo" variant="outlined"
       sx={{
         mt: 4,
         width: "100%",
@@ -176,45 +114,33 @@ export default function CustomPaginationActionsTable() {
           borderBottomColor: "#1E56A0",
         },
       }} />
-       {spinner ? (<Box sx={{display: "flex", justifyContent: "center", alignContent: "center" }}>
-          <CircularProgress size={"1.5rem"} />
-        </Box>) : (
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
         <TableHead>
               <TableRow>
-                <TableCell align="center">Fecha</TableCell>
-                <TableCell align="center">Desde</TableCell>
-                <TableCell align="center">Hasta</TableCell>
-                <TableCell align="center">Profesional</TableCell>
-                <TableCell align="center">Especialidad</TableCell>
-                <TableCell align="center">Accion</TableCell>
+                <TableCell align="center">Nombre</TableCell>
+                <TableCell align="center">Apellido</TableCell>
+                <TableCell align="center">Correo</TableCell>
+                <TableCell align="center">Celular</TableCell>
               </TableRow>
             </TableHead>
           <TableBody>
             {(rowsPerPage > 0
-              ? quotesState.filter(value => value.fecha.includes(search)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              : quotesState
+              ? patients?.filter(value => value.nombre.includes(search) || value.apellido.includes(search) || value.correo.includes(search))?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              : patients
             ).map((row) => (
               <TableRow
-                  key={row.id}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <TableCell align="center">
-                    {row.fecha.slice(0,10)}
-                  </TableCell>
-                  <TableCell align="center">{row.desde}</TableCell>
-                  <TableCell align="center">{row.hasta}</TableCell>
-                  <TableCell align="center">{row.nombre}</TableCell>
-                  <TableCell align="center">{row.especialidad}</TableCell>
-                  <TableCell align="center">{<DeleteIcon
-                                onClick={() => deleteQuote(row.id)}
-                                sx={{
-                                  color: "red",
-                                  ":hover": { cursor: "pointer" },
-                                }}
-                              />}</TableCell>
-                </TableRow>
+              key={row.id}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              <TableCell align='center'>
+                {row.nombre}
+              </TableCell>
+              <TableCell align="center">{row.apellido}</TableCell>
+              <TableCell align="center">{row.correo}</TableCell>
+                <TableCell align="center">{row.celular}</TableCell>
+             
+            </TableRow>
             ))}
 
             {emptyRows > 0 && (
@@ -228,7 +154,7 @@ export default function CustomPaginationActionsTable() {
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                 colSpan={6}
-                count={quotesState.length}
+                count={patients.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 SelectProps={{
@@ -244,14 +170,7 @@ export default function CustomPaginationActionsTable() {
             </TableRow>
           </TableFooter>
         </Table>
-        <ConfirmPopUp
-        open={openConfirm}
-        setOpen={setOpenConfirm}
-        title={titleConfirm}
-        content={textConfirm}
-        handleConfirm={handleConfirm}
-      />
-      </TableContainer>)}	
+      </TableContainer>	
     </>
   );
 }

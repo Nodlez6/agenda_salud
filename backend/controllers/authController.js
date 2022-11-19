@@ -4,6 +4,7 @@ const prisma = require("../prisma/prismaClient");
 const auth = async (req, res) => {
   const { correo, contrasenia } = req.body;
   let user;
+  let match;
 
   console.log(req.body);
 
@@ -16,7 +17,9 @@ const auth = async (req, res) => {
       where: { correo: correo },
     });
   }
-  const match = await bcrypt.compare(contrasenia, user.contrasenia);
+  if(user){
+     match = await bcrypt.compare(contrasenia, user.contrasenia);
+  }
 
   if (user) {
     if (match) {

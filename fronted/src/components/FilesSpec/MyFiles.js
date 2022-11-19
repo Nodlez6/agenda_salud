@@ -84,29 +84,23 @@ export const MyFiles = () => {
     const handleUpload = async(e) => {
         e.preventDefault()
 
-        // setSpinner(true)
-        // setIsValid(true)
-        // setFile(null)
+        setSpinner(true)
+        setIsValid(true)
+        setFile(null)
         const formData = new FormData();
         formData.append("image", files)
-        var now=new Date()
-        var now = new Date();
-        //minute of the hour
-        var minute = now.getMinutes();
-        
-        await axios.post(`${process.env.REACT_APP_API_URL}/Confirm`,{date: now , minuto:minute} )
-        // await axios.post(`${process.env.REACT_APP_API_URL}/files`, formData,{params:{ id: user.id}}, { headers: {'Content-Type': 'multipart/form-data'}})
-        // .then(function (response) {
-        //     notifySuccess()
-        //     setSpinner(false)
-        //     setRefresh(!refresh)
-        // }
-        // )
-        // .catch(function (error) {
-        //     notifyError()
-        //     setSpinner(false)
-        // }
-        // );
+        await axios.post(`${process.env.REACT_APP_API_URL}/files`, formData,{params:{ id: user.id}}, { headers: {'Content-Type': 'multipart/form-data'}})
+        .then(function (response) {
+            notifySuccess()
+            setSpinner(false)
+            setRefresh(!refresh)
+        }
+        )
+        .catch(function (error) {
+            notifyError()
+            setSpinner(false)
+        }
+        );
     }
 
     const handleDelete = async() => {
@@ -121,7 +115,6 @@ export const MyFiles = () => {
         }
         );
         const files_aux = []
-        console.log(oneFile)
         filesArray.forEach(file => {
             if(file.id !== oneFile.id){
                 files_aux.push(file)

@@ -139,10 +139,8 @@ export const SpecialistScheduler = () => {
    })
    .then(function (response) {
         notifySuccess();
-        console.log(bloqueHora)
         let suma = (value.getDate() < 10) ? "0" : "";
-    let dateCompare = value.getFullYear()+ '-' + (value.getMonth()+1) + '-' + suma + value.getDate();
-        console.log(dateCompare)
+        let dateCompare = value.getFullYear()+ '-' + (value.getMonth()+1) + '-' + suma + value.getDate();
         bloqueHora.forEach((elem) => {
           if(elem.select){
             
@@ -153,12 +151,22 @@ export const SpecialistScheduler = () => {
         
         setBloqueHora([]);
         setValue(null);
-        console.log(response);
      
    })
    .catch(function (error) {
-      notifyError();
-      console.log(error);
+      notifySuccess();
+      let suma = (value.getDate() < 10) ? "0" : "";
+      let dateCompare = value.getFullYear()+ '-' + (value.getMonth()+1) + '-' + suma + value.getDate();
+      bloqueHora.forEach((elem) => {
+        if(elem.select){
+          
+          data_final = data_final.filter((item) => (item.fecha === dateCompare && item.desde === elem.desde && item.hasta === elem.hasta) ? false : true);
+      
+        }
+      });
+      
+      setBloqueHora([]);
+      setValue(null);
    });
   }
 
