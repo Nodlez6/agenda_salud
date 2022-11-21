@@ -3,27 +3,17 @@ import React, { useContext, useEffect } from 'react'
 import axios from 'axios';
 import { AuthContext } from '../../auth/authContext';
 import { Card, Container, Typography } from '@mui/material';
-import { StatisticsPacient } from './StatisticsPacient';
 
-
-export const StatisticsScreen = () => {
+export const StatisticsPacient = () => {
   const { user } = useContext(AuthContext);
   const [dataCountDate, setDataCountDate] = React.useState([]);
   useEffect(() => {
     let isMounted = true;
     axios
-      .get(`${process.env.REACT_APP_API_URL}/statistics/${user.id}`)
+      .get(`${process.env.REACT_APP_API_URL}/statistics/pacient/${user.id}`)
       .then(function (response) {
         if (isMounted) {
           console.log(response.data);
-          const data = response.data.map((item) => {
-            return {
-              fecha: item.fecha.split("T")[0],
-              Cantidad: item._count.fecha,
-            }
-          }
-          )
-          setDataCountDate(data);
         }
       })
       .catch(function (error) {
@@ -80,7 +70,9 @@ export const StatisticsScreen = () => {
 
   return (
     <Container>
-      <Card sx={{width: 540, height:350, mt:4, padding: 1}}>
+     
+
+          <Card sx={{width: 540, height:350, mt:4, padding: 1}}>
       <Typography sx={{
                       fontFamily: "monospace",
                       fontWeight: 400,
@@ -103,8 +95,6 @@ export const StatisticsScreen = () => {
               <Bar dataKey="Cantidad" fill="#163172" />
             </BarChart>
           </Card>
-
-         <StatisticsPacient />
       </Container>
   )
 }

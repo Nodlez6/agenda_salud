@@ -7,6 +7,7 @@ import React, { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { AuthContext } from "../../auth/authContext";
+import DialogQuote from "./DialogQuote";
 
 function toDate(dStr, format) {
   var now = new Date();
@@ -57,6 +58,7 @@ const formatSelectedDate = (data,quotesTaked ) => {
   return data_final;
 }
 let data_final = [];
+let quantityHours = 0;
 
 export const SpecialistScheduler = () => {
   const notifyError = () =>
@@ -74,6 +76,8 @@ export const SpecialistScheduler = () => {
  const { user } = useContext(AuthContext);
  const [isValid, setIsValid] = React.useState(true);
  const [spinner, setSpinner] = React.useState(false);
+ const [open, setOpen] = React.useState(false);
+ const [token, setToken] = React.useState("");
 
 
   const handleCalendar = (date) => {
@@ -130,6 +134,7 @@ export const SpecialistScheduler = () => {
         });
       }
     });
+    quantityHours = data.length;
    axios
    .post(`${process.env.REACT_APP_API_URL}/quotes`, {
      idEspecialista: id,
@@ -169,6 +174,30 @@ export const SpecialistScheduler = () => {
       setValue(null);
    });
   }
+
+  const handlePayment = () => {
+    
+  };
+
+  const handleTakeHour = () => {
+
+    setOpen(false);
+  };
+
+  const handleClickOpen = () => {
+    handleSubmit();
+    axios.post(`${process.env.REACT_APP_API_URL}/transaction/create`,{
+        amount: 20000 * quantityHours,
+      }).then((response)=>{
+        console.log(response)
+        setToken(response.data.token)
+      }
+        ).catch((error)=>{
+            console.log(error)
+        })
+    setOpen(true);
+};
+
 
   return (
     
@@ -249,24 +278,15 @@ export const SpecialistScheduler = () => {
             </Card>
         </Grid>
           <Grid sx={{display: "flex", justifyContent: "end"}} item md={12} xs={12}>
-            <Button 
-            onClick={handleSubmit}
-            disabled={isValid}
-            sx={{
-              backgroundColor: "#163172",
-              color: "white",
-              "&:hover": {
-                backgroundColor: "#1d4197",
-                transition: "0.4s",
-              },
-              "&:disabled": {
-                background: "#cfcfcf",
-              },
-            }}
-            
-            >
-              Guardar
-            </Button>
+            <DialogQuote
+          open={open}
+          isValid={isValid}
+          setOpen={setOpen}
+          handleClickOpen={handleClickOpen}
+          handlePayment={handlePayment}
+          handleTakeHour={handleTakeHour}
+          title={"Deseas pagar esta hora?"}
+        ></DialogQuote>
           </Grid></>)}
         
       </Grid>

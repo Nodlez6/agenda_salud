@@ -3,10 +3,12 @@ const express = require("express");
 const router = express.Router();
 
 const {
-    getMostHoursTaken
+    getMostHoursTaken,
+    getQuantityByPaciente
 } = require("../controllers/statisticsController");
 
 
 router.route("/:id").get(getMostHoursTaken);
+router.route("/pacient/:id").get(getQuantityByPaciente);
 
 module.exports = router;
