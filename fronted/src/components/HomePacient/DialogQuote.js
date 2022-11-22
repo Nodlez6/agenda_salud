@@ -7,7 +7,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import axios from 'axios';
 
-export default function DialogQuote({open, isValid, setOpen,handleClickOpen,  handlePayment, handleTakeHour, title, content}) {
+export default function DialogQuote({open, isValid, setOpen,handleClickOpen, token,  title}) {
     const handleClose = () => {
         setOpen(false);
     };
@@ -28,8 +28,11 @@ export default function DialogQuote({open, isValid, setOpen,handleClickOpen,  ha
           {title}
         </DialogTitle>
         <DialogActions>
-          <Button onClick={handlePayment}>Si</Button>
-          <Button onClick={handleTakeHour} autoFocus>
+          <form action="https://webpay3gint.transbank.cl/webpayserver/initTransaction" method="POST">
+            <input type="hidden" name="token_ws" value={token}/>
+            <Button type="submit" > Si </Button>
+           </form> 
+          <Button onClick={() => setOpen(false)} autoFocus>
             No
           </Button>
         </DialogActions>

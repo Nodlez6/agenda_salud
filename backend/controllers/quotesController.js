@@ -5,11 +5,11 @@ const { ConfirmarHora  } = require('./confirmController')
 const createQuote = async (req, res) => {
 
     const { idEspecialista,idUsuario, fecha, horarios} = req.body;
-
+    const quotesArrayResponse = [];
     
     try {
+        
         horarios.forEach(async (item) => {
-            console.log(item.desde, new Date(item.desde).toLocaleTimeString())
             quotes = await prisma.citas.create({
               data: {
                 id_especialista: Number(idEspecialista),
@@ -19,9 +19,12 @@ const createQuote = async (req, res) => {
                 hasta: new Date(item.hasta),
               },
             });
+            quotesArrayResponse.push(quotes.id);
+            console.log(quotesArrayResponse)
             ConfirmarHora(quotes.id,quotes.fecha,quotes.desde,quotes.id_usuario)
           });
-          res.status(200).json(quotes);
+          console.log(quotesArrayResponse)
+          res.status(200).json("dsffds");
     } catch (error) {
         res.status(500).json({
         error: error.message,

@@ -59,6 +59,7 @@ const formatSelectedDate = (data,quotesTaked ) => {
 }
 let data_final = [];
 let quantityHours = 0;
+let idQuote = 0;
 
 export const SpecialistScheduler = () => {
   const notifyError = () =>
@@ -143,6 +144,7 @@ export const SpecialistScheduler = () => {
      horarios: data,
    })
    .then(function (response) {
+        console.log(response)
         notifySuccess();
         let suma = (value.getDate() < 10) ? "0" : "";
         let dateCompare = value.getFullYear()+ '-' + (value.getMonth()+1) + '-' + suma + value.getDate();
@@ -159,6 +161,7 @@ export const SpecialistScheduler = () => {
      
    })
    .catch(function (error) {
+    console.log(error)
       notifySuccess();
       let suma = (value.getDate() < 10) ? "0" : "";
       let dateCompare = value.getFullYear()+ '-' + (value.getMonth()+1) + '-' + suma + value.getDate();
@@ -175,14 +178,8 @@ export const SpecialistScheduler = () => {
    });
   }
 
-  const handlePayment = () => {
-    
-  };
 
-  const handleTakeHour = () => {
 
-    setOpen(false);
-  };
 
   const handleClickOpen = () => {
     handleSubmit();
@@ -282,9 +279,8 @@ export const SpecialistScheduler = () => {
           open={open}
           isValid={isValid}
           setOpen={setOpen}
+          token={token}
           handleClickOpen={handleClickOpen}
-          handlePayment={handlePayment}
-          handleTakeHour={handleTakeHour}
           title={"Deseas pagar esta hora?"}
         ></DialogQuote>
           </Grid></>)}
