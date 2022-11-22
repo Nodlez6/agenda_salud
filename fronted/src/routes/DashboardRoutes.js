@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import { Comprobante } from "../components/Comprobante/Comprobante";
 import { FilesSpecialistsScreen } from "../components/FilesSpec/FilesSpecialistsScreen";
 import { Home } from "../components/Home/Home";
 import { HomePacient } from "../components/HomePacient/HomePacient";
@@ -24,6 +25,7 @@ export const DashboardRoutes = () => {
         <Route path="/home" element={<Home />} />
         <Route path="/file/specialist" element={<FilesSpecialistsScreen />} />
         <Route path="/quotesPacient" element={<QuotesPacient />} />
+        <Route path="/comprobant" element={<Comprobante />} />
         <Route
           path="/schedule"
           element={
