@@ -25,7 +25,7 @@ export const DashboardRoutes = () => {
         <Route path="/home" element={<Home />} />
         <Route path="/file/specialist" element={<FilesSpecialistsScreen />} />
         <Route path="/quotesPacient" element={<QuotesPacient />} />
-        <Route path="/comprobant" element={<Comprobante />} />
+        <Route path="/comprobant/:ides" element={<Comprobante />} />
         <Route
           path="/schedule"
           element={

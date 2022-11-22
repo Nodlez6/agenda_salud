@@ -60,6 +60,7 @@ const formatSelectedDate = (data,quotesTaked ) => {
 let data_final = [];
 let quantityHours = 0;
 let idQuote = 0;
+let idsquotes="";
 
 export const SpecialistScheduler = () => {
   const notifyError = () =>
@@ -144,7 +145,16 @@ export const SpecialistScheduler = () => {
      horarios: data,
    })
    .then(function (response) {
-        console.log(response)
+        axios.post(`${process.env.REACT_APP_API_URL}/transaction/create`,{
+          amount: 20000 * quantityHours,
+          ides: response.data
+        }).then((response)=>{
+          console.log(response)
+          setToken(response.data.token)
+        }
+          ).catch((error)=>{
+              console.log(error)
+          })
         notifySuccess();
         let suma = (value.getDate() < 10) ? "0" : "";
         let dateCompare = value.getFullYear()+ '-' + (value.getMonth()+1) + '-' + suma + value.getDate();
@@ -183,15 +193,7 @@ export const SpecialistScheduler = () => {
 
   const handleClickOpen = () => {
     handleSubmit();
-    axios.post(`${process.env.REACT_APP_API_URL}/transaction/create`,{
-        amount: 20000 * quantityHours,
-      }).then((response)=>{
-        console.log(response)
-        setToken(response.data.token)
-      }
-        ).catch((error)=>{
-            console.log(error)
-        })
+    // 
     setOpen(true);
 };
 

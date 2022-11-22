@@ -19,6 +19,8 @@ import { Link,useParams,useLocation } from "react-router-dom";
 
 
 export const Comprobante = () => {
+    const { ides } = useParams();
+    console.log(ides)
     const query = new URLSearchParams(useLocation().search);
     const token = query.get("token_ws");
     const TBK_TOKEN = query.get("TBK_TOKEN");
@@ -42,7 +44,6 @@ export const Comprobante = () => {
 
     }
     
-    console.log(token)
 
 
   return (

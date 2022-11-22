@@ -5,27 +5,40 @@ const { ConfirmarHora  } = require('./confirmController')
 const createQuote = async (req, res) => {
 
     const { idEspecialista,idUsuario, fecha, horarios} = req.body;
-    const quotesArrayResponse = [];
+    
     
     try {
-        
-        horarios.forEach(async (item) => {
-            quotes = await prisma.citas.create({
-              data: {
-                id_especialista: Number(idEspecialista),
-                id_usuario: Number(idUsuario),
-                fecha: new Date(fecha),
-                desde: new Date(item.desde),
-                hasta: new Date(item.hasta),
-              },
+        const quotesArrayResponse = [];
+        let ides=""
+        for (let i=0; i<horarios.length; i++){
+            const quotes = await prisma.citas.create({
+                data: {
+                    id_especialista: Number(idEspecialista),
+                    id_usuario: Number(idUsuario),
+                    fecha: fecha,
+                    desde: horarios[i].desde,
+                    hasta: horarios[i].hasta,
+                },
             });
-            quotesArrayResponse.push(quotes.id);
-            console.log(quotesArrayResponse)
+        // horarios.forEach(async (item) => {
+        //     quotes = await prisma.citas.create({
+        //       data: {
+        //         id_especialista: Number(idEspecialista),
+        //         id_usuario: Number(idUsuario),
+        //         fecha: new Date(fecha),
+        //         desde: new Date(item.desde),
+        //         hasta: new Date(item.hasta),
+        //       },
+        //     });
+            
+            ides=ides+quotes.id+","
             ConfirmarHora(quotes.id,quotes.fecha,quotes.desde,quotes.id_usuario)
-          });
-          console.log(quotesArrayResponse)
-          res.status(200).json("dsffds");
+          };
+          console.log("gg")
+          console.log("entregame",ides)
+          res.status(200).json(ides);
     } catch (error) {
+        console.log(error)
         res.status(500).json({
         error: error.message,
         });
@@ -44,10 +57,8 @@ const deleteQuote = async (req, res) => {
                 deletedat: new Date(),
             },
         });
-        if (deleted) {
-        return res.status(200).send(deleted);
-        }
-        throw new Error("Quote not found");
+        
+        return res.status(200).send(update);
     } catch (error) {
         res.status(500).send(error.message);
     }
