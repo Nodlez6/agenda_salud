@@ -10,6 +10,7 @@ const getMostHoursTaken = async (req, res) => {
             by: ["fecha"],
             where: {
                 id_especialista: Number(id),
+                deletedat: null,
             },
             _count: {
                 fecha: true,
@@ -27,20 +28,19 @@ const getMostHoursTaken = async (req, res) => {
 
 const getQuantityByPaciente = async (req, res) => {
     const { id } = req.params;
+    
 
     try {
-        const quantityByPaciente = await prisma.citas.groupBy({
-            by: ["id_usuario"],
-            where: {
-                id_especialista: Number(id),
-            },
-            include: {
-                usuarios: true,
-            },
-        });
+        const result = await prisma.$queryRaw`select count(*) as cantidad, CONCAT(u.nombre,' ',u.apellido) as Usuario from citas c
+        inner join usuarios u ON u.id = c.id_usuario
+        where id_especialista = ${Number(id)}
+        and c.deletedat IS NULL
+        group by u.nombre , u.apellido`
 
-        console.log(quantityByPaciente);
-        res.status(200).json(quantityByPaciente);
+        result.forEach((item) => {
+            item.cantidad = Number(item.cantidad);
+        });
+        res.status(200).json(result);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
