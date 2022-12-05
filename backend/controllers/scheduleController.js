@@ -114,6 +114,7 @@ const getScheduleBySpecialistWithPeriodicidad = async (req, res) => {
   }
 };
 
+
 const getScheduleBySpecialistWithoutPeriodicidad = async (req, res) => {
   const { id } = req.params;
   try {
@@ -130,20 +131,20 @@ const getScheduleBySpecialistWithoutPeriodicidad = async (req, res) => {
 
 const createSchedule = async (req, res) => {
   const { idEspecialista, fecha, horarios, periodicidad } = req.body;
-
   const deletedDate = req.body.deleted_at;
   let schedule;
   try {
+  
     horarios.forEach(async (item) => {
       schedule = await prisma.horarios.create({
-        data: {
+        data:{
           id_especialista: Number(idEspecialista),
           fecha: new Date(fecha),
           desde: new Date(item.desde),
           hasta: new Date(item.hasta),
           periodicidad: periodicidad,
           deletedat: deletedDate,
-        },
+        }
       });
     });
     res.status(200).json(schedule);

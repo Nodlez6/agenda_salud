@@ -190,7 +190,6 @@ export const UploadFilePacient = ({user, idPaciente}) => {
             </Card>
             
       </Box>
-      <Button onClick={handleChangeVisible} sx={{backgroundColor: "#163172", mt:3,  color: "white", "&:hover": {backgroundColor: "#1d4197", transition: "0.4s",}}}>Actualizar</Button>
         
          <Grid sx={{mt: 3, backgroundColor: "white", boxShadow: 2, height: "23rem", overflow: "auto", padding: 3}} container columnSpacing={1.5} rowSpacing={1.5}>
             {spinner2 ? (<Box sx={{display: "flex", justifyContent: "center", alignContent: "center" }}>

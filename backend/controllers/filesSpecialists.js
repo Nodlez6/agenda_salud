@@ -7,7 +7,6 @@ const prisma = require("../prisma/prismaClient");
 
 const UploadFile = async (req, res) => {
     try {
-        console.log(req.query)
         path="Especialista_"+req.query.id+"/Mis_Archivos/"
         const file = req.file;
         console.log(file)
