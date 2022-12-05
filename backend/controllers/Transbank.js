@@ -1,5 +1,5 @@
 const WebpayPlus = require('transbank-sdk').WebpayPlus;
-
+require("dotenv").config("./../.env");
 
 
 const CreateTransaction = async (req, res) => {
@@ -7,7 +7,7 @@ const CreateTransaction = async (req, res) => {
     console.log(req.body)
     const buyOrder = "O-" + Math.floor(Math.random() * 10000) + 1;
     const sessionId = "S-" + Math.floor(Math.random() * 10000) + 1;
-    const returnUrl = 'http://localhost:3000/comprobant/'+ides;
+    const returnUrl = `${process.env.FRONTED_URL}/comprobant/`+ides;
     const response = await (new WebpayPlus.Transaction()).create(buyOrder, sessionId, amount, returnUrl);
     console.log(response)
     res.status(200).json(response);
