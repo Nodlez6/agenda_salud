@@ -38,12 +38,12 @@ const ConfirmarHora = async (id_cita,fecha,desde,id_usuario)=> {
             setTimeout(function(){
                 var options = {
                     method: 'POST',
-                    url: 'https://api.ultramsg.com/instance21826/messages/chat',
+                    url: 'https://api.ultramsg.com/instance25524/messages/chat',
                     headers: {'content-type': 'application/x-www-form-urlencoded'},
                     form: {
-                      token: 'hqwcgehmklar88dt',
+                      token: 'nan2lykfs7jtc3jd',
                       to: '+'+user.celular,
-                      body: 'Buenas, desea confirmar su hora para el dia '+fecha+' a las '+desde+'?',
+                      body: 'Buenas, desea confirmar su hora para el dia '+fecha+' a las '+hora+'?',
                       priority: '1',
                       referenceId: ''
                     }
